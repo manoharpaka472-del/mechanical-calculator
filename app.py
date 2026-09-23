@@ -10,24 +10,24 @@ st.set_page_config(
     layout="centered"
 )
 
-# ----------------- MECHANICAL BLUEPRINT DRAFTING BACKGROUND ----------------- #
+# ----------------- ATTRACTIVE WALLPAPER & VIBRANT BUTTONS CSS ----------------- #
 st.markdown("""
     <style>
-    /* Mechanical Engineering Blueprint Drawing Wallpaper */
+    /* Industrial Mechanical High-Tech Background */
     .stApp {
-        background: linear-gradient(rgba(10, 25, 47, 0.88), rgba(5, 14, 28, 0.94)), 
-                    url('https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1920&q=80');
+        background: linear-gradient(rgba(10, 14, 26, 0.88), rgba(6, 10, 20, 0.94)), 
+                    url('https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-        color: #F1F5F9;
+        color: #F8FAFC;
     }
 
     /* 3D Glassmorphic Student Header */
     .student-badge-3d {
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.28), rgba(99, 102, 241, 0.22));
-        border: 1px solid rgba(56, 189, 248, 0.5);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(14, 165, 233, 0.28));
+        border: 1px solid rgba(245, 158, 11, 0.55);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         border-radius: 14px;
@@ -35,49 +35,54 @@ st.markdown("""
         margin-bottom: 22px;
     }
 
-    /* Modern Neon Buttons */
+    /* VIBRANT CONTRASTING BUTTONS (Electric Gold & Amber Glow) */
     div.stButton > button {
-        background: linear-gradient(145deg, #1e293b, #0f172a);
-        color: #38bdf8 !important;
-        border: 1px solid rgba(56, 189, 248, 0.35) !important;
-        border-radius: 10px !important;
-        padding: 10px 18px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-        transition: all 0.2s ease !important;
+        background: linear-gradient(145deg, #f59e0b, #d97706) !important;
+        color: #0f172a !important;
+        border: 1px solid #fde68a !important;
+        border-radius: 12px !important;
+        padding: 10px 20px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.4px !important;
+        box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     div.stButton > button:hover {
-        transform: translateY(-2px);
-        border-color: #38bdf8 !important;
-        box-shadow: 0 8px 22px rgba(14, 165, 233, 0.45) !important;
-        color: #ffffff !important;
+        transform: translateY(-2px) scale(1.02);
+        background: linear-gradient(145deg, #fbbf24, #f59e0b) !important;
+        border-color: #ffffff !important;
+        box-shadow: 0 10px 25px rgba(245, 158, 11, 0.65), 0 0 15px rgba(251, 191, 36, 0.5) !important;
+        color: #000000 !important;
+    }
+    div.stButton > button:active {
+        transform: translateY(1px) scale(0.98);
     }
 
-    /* Input & Select styling */
+    /* 3D Inputs */
     div[data-baseweb="input"] input, div[data-baseweb="select"] {
-        background-color: rgba(15, 23, 42, 0.85) !important;
-        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        background-color: rgba(15, 23, 42, 0.9) !important;
+        border: 1px solid rgba(245, 158, 11, 0.4) !important;
         border-radius: 8px !important;
         color: #f8fafc !important;
     }
 
-    /* Sidebar Blueprint Panel */
+    /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background: rgba(8, 18, 36, 0.94) !important;
+        background: rgba(10, 15, 28, 0.95) !important;
         backdrop-filter: blur(16px);
-        border-right: 1px solid rgba(56, 189, 248, 0.25);
+        border-right: 1px solid rgba(245, 158, 11, 0.25);
     }
 
-    /* Calculation History Cards */
+    /* Calculation History Box */
     .history-card {
-        background: rgba(15, 23, 42, 0.88);
-        border-left: 3px solid #38bdf8;
+        background: rgba(15, 23, 42, 0.9);
+        border-left: 3px solid #f59e0b;
         border-radius: 6px;
         padding: 8px 10px;
         margin-bottom: 6px;
         font-family: monospace;
         font-size: 0.82rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -101,7 +106,7 @@ def set_module(name):
     st.session_state.module = name
 
 
-# ----------------- CORE CALCULATION FUNCTIONS ----------------- #
+# ----------------- CALCULATION FUNCTIONS ----------------- #
 # 1. Mechanics
 def calc_force(m, a): return m * a
 def calc_work(f, d): return f * d
@@ -145,22 +150,37 @@ def calc_euler_buckling(E, I, L, end_condition):
     effective_length = k * L
     return (math.pi ** 2 * E * I) / (effective_length ** 2)
 
-def calc_spring_stiffness(G, d, D, n):
-    return (G * (d ** 4)) / (8 * (D ** 3) * n) if (D > 0 and n > 0) else None
-
-def calc_spring_shear_stress(W, D, d):
-    return (8 * W * D) / (math.pi * (d ** 3)) if d > 0 else None
-
+def calc_spring_stiffness(G, d, D, n): return (G * (d ** 4)) / (8 * (D ** 3) * n) if (D > 0 and n > 0) else None
+def calc_spring_shear_stress(W, D, d): return (8 * W * D) / (math.pi * (d ** 3)) if d > 0 else None
 def calc_belt_drive(d1, n1, d2):
     n2 = (n1 * d1) / d2 if d2 > 0 else None
     velocity = (math.pi * (d1 / 1000) * n1) / 60
     return n2, velocity
 
+# Additional Mechanical Tools
+def calc_flywheel(mass, k_radius, rpm, cs):
+    # I = m * k^2, omega = (2*pi*N)/60
+    # E_k = 0.5 * I * omega^2,  delta_E = I * omega^2 * Cs
+    omega = (2 * math.pi * rpm) / 60
+    i_inertia = mass * (k_radius ** 2)
+    e_kin = 0.5 * i_inertia * (omega ** 2)
+    delta_e = i_inertia * (omega ** 2) * cs
+    return i_inertia, e_kin, delta_e
+
+def calc_flange_coupling(d_shaft):
+    # Standard empirical proportions for rigid flange coupling
+    d_hub = 2 * d_shaft
+    l_hub = 1.5 * d_shaft
+    d_pitch = 3 * d_shaft
+    d_outside = 4 * d_shaft
+    t_flange = 0.5 * d_shaft
+    return d_hub, l_hub, d_pitch, d_outside, t_flange
+
 
 # ----------------- SIDEBAR PROFILE & NAVIGATION ----------------- #
 st.sidebar.markdown("""
-<div style="background: rgba(14, 165, 233, 0.12); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.35);">
-    <h4 style="margin:0; color:#38bdf8;">⚙️ STUDENT DETAILS</h4>
+<div style="background: rgba(245, 158, 11, 0.14); padding: 12px; border-radius: 10px; border: 1px solid rgba(245, 158, 11, 0.45);">
+    <h4 style="margin:0; color:#fbbf24;">⚙️ STUDENT DETAILS</h4>
     <p style="margin:3px 0 0 0; font-size: 0.9rem;"><b>Name:</b> P . MANOHAR</p>
     <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Roll No:</b> 2505A31016</p>
     <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Year:</b> 2nd Year</p>
@@ -227,11 +247,11 @@ st.markdown("""
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
             <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">P . MANOHAR</div>
-            <div style="font-size: 0.9rem; color: #38bdf8; font-weight: 600;">ROLL NO: 2505A31016</div>
+            <div style="font-size: 0.9rem; color: #fbbf24; font-weight: 600;">ROLL NO: 2505A31016</div>
         </div>
         <div style="text-align: right; font-size: 0.85rem; color: #cbd5e1;">
             <b>2nd Year</b> | Mechanical Engineering<br>
-            <span style="color:#00f2fe;">Drafting Blueprint Edition</span>
+            <span style="color:#f59e0b;">Turbine Machinery Suite</span>
         </div>
     </div>
 </div>
@@ -248,7 +268,7 @@ if st.session_state.module != "🏠 Home Menu":
 
 # 0. HOME MENU
 if st.session_state.module == "🏠 Home Menu":
-    st.title("⚙️ Mechanical Engineering Dashboard")
+    st.title("⚙️ Engineering Calculator Dashboard")
     st.write("Launch specialized modules, tools, and visualizers below:")
 
     col_a, col_b = st.columns(2)
@@ -282,7 +302,7 @@ if st.session_state.module == "🏠 Home Menu":
             set_module("6. Machine Design"); st.rerun()
 
     st.write("")
-    if st.button("🛠️ Mechanical Utilities (Springs, Belts, Vessels, Buckling)", use_container_width=True):
+    if st.button("🛠️ Mechanical Utilities (Flywheels, Couplings, Springs, Vessels)", use_container_width=True):
         set_module("🛠️ Mechanical Student Utilities"); st.rerun()
 
 # 1. LIVE QR CODE
@@ -294,7 +314,7 @@ elif st.session_state.module == "📱 Mobile QR Code Scanner":
     app_url = st.text_input("App URL:", value=default_url)
 
     encoded_url = urllib.parse.quote(app_url)
-    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=38bdf8"
+    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=f59e0b"
 
     col_qr1, col_qr2 = st.columns([1, 1])
     with col_qr1:
@@ -649,19 +669,21 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Diameter (d) = {d*1000:.2f} mm**")
             add_history("Shaft Dia", f"T={t}Nm, τ={tau}MPa -> d={d*1000:.2f}mm")
 
-# 11. ADVANCED MECHANICAL UTILITIES
+# 11. ADVANCED MECHANICAL UTILITIES (EXPANDED SUITE)
 elif st.session_state.module == "🛠️ Mechanical Student Utilities":
     st.header("🛠️ Advanced Mechanical Student Utilities")
 
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "🔄 Unit Converter", 
-        "🌀 Helical Spring Design", 
-        "⚙️ Flat Belt Drive",
+        "🎡 Flywheel Energy",
+        "🔩 Flange Coupling",
+        "🌀 Helical Spring", 
+        "⚙️ Belt Drive",
         "🏛️ Column Buckling", 
-        "🛢️ Thin Pressure Vessels",
-        "⚖️ Weight Estimator"
+        "🛢️ Pressure Vessels"
     ])
 
+    # Tool 1: Unit Converter
     with tab1:
         st.subheader("Unit Converter")
         tool = st.selectbox("Conversion Mode", ["Pressure", "Power", "Length", "Torque"])
@@ -678,11 +700,46 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
             val = st.number_input("Torque in N·m", value=10.0)
             st.info(f"**{val} N·m** = **{val * 0.73756:.3f} lbf·ft** = **{val * 8.8507:.2f} lbf·in**")
 
+    # Tool 2: Flywheel Energy Storage
     with tab2:
+        st.subheader("Flywheel Kinetic Energy & Energy Fluctuation")
+        st.latex(r"E = \frac{1}{2} I \omega^2, \quad \Delta E = I \omega^2 C_s")
+        m_fly = st.number_input("Flywheel Mass (m) [kg]", min_value=1.0, value=250.0)
+        k_fly = st.number_input("Radius of Gyration (k) [meters]", min_value=0.01, value=0.45)
+        rpm_fly = st.number_input("Mean Rotational Speed (N) [RPM]", min_value=1.0, value=720.0)
+        cs_fly = st.number_input("Coefficient of Speed Fluctuation (C_s)", min_value=0.001, max_value=0.5, value=0.03, step=0.005)
+
+        if st.button("Calculate Flywheel Energy"):
+            i_val, e_tot, delta_e = calc_flywheel(m_fly, k_fly, rpm_fly, cs_fly)
+            st.success(f"**Mass Moment of Inertia (I):** {i_val:.3f} kg·m²")
+            st.success(f"**Stored Kinetic Energy (E):** {e_tot/1000:.2f} kJ ({e_tot:.1f} J)")
+            st.info(f"**Maximum Energy Fluctuation (ΔE):** {delta_e/1000:.2f} kJ")
+            add_history("Flywheel", f"m={m_fly}kg, N={rpm_fly}RPM -> E={e_tot/1000:.1f}kJ, ΔE={delta_e/1000:.2f}kJ")
+
+    # Tool 3: Rigid Flange Coupling Dimensions
+    with tab3:
+        st.subheader("Protected Rigid Flange Coupling Proportioner")
+        st.write("Calculates empirical standard design dimensions from shaft diameter ($d$):")
+        st.latex(r"D = 2d, \quad L = 1.5d, \quad D_1 = 3d, \quad D_2 = 4d, \quad t_f = 0.5d")
+        d_shaft = st.number_input("Shaft Diameter (d) [mm]", min_value=5.0, value=40.0)
+
+        if st.button("Determine Coupling Proportions"):
+            d_hub, l_hub, d_pitch, d_outside, t_flange = calc_flange_coupling(d_shaft)
+            st.markdown(f"""
+            - **Hub Outside Diameter ($D = 2d$):** `{d_hub:.1f} mm`
+            - **Hub Length ($L = 1.5d$):** `{l_hub:.1f} mm`
+            - **Pitch Circle Diameter of Bolts ($D_1 = 3d$):** `{d_pitch:.1f} mm`
+            - **Outside Flange Diameter ($D_2 = 4d$):** `{d_outside:.1f} mm`
+            - **Thickness of Flange ($t_f = 0.5d$):** `{t_flange:.1f} mm`
+            """)
+            add_history("Flange Coupling", f"d={d_shaft}mm -> Hub D={d_hub}mm, PCD={d_pitch}mm")
+
+    # Tool 4: Helical Spring
+    with tab4:
         st.subheader("Helical Compression Spring Design")
         st.latex(r"k = \frac{G \cdot d^4}{8 \cdot D^3 \cdot n}, \quad \tau = \frac{8 \cdot W \cdot D}{\pi \cdot d^3}")
         g_gpa = st.number_input("Shear Modulus (G) [GPa]", min_value=1.0, value=79.0)
-        w_load = st.number_input("Axial Load on Spring (W) [N]", min_value=0.1, value=500.0)
+        w_load = st.number_input("Axial Load (W) [N]", min_value=0.1, value=500.0)
         d_wire = st.number_input("Wire Diameter (d) [mm]", min_value=0.1, value=5.0)
         d_mean = st.number_input("Mean Coil Diameter (D) [mm]", min_value=1.0, value=40.0)
         n_coils = st.number_input("Number of Active Coils (n)", min_value=1, value=10)
@@ -691,18 +748,17 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
             g_pa = g_gpa * 1e9
             d_m = d_wire / 1000.0
             d_mean_m = d_mean / 1000.0
-            
             k_stiffness = calc_spring_stiffness(g_pa, d_m, d_mean_m, n_coils)
             tau_stress = calc_spring_shear_stress(w_load, d_mean_m, d_m)
             c_index = d_mean / d_wire
-
             st.success(f"**Spring Stiffness (k):** {k_stiffness/1000:.2f} N/mm ({k_stiffness:.1f} N/m)")
-            st.success(f"**Maximum Torsional Shear Stress (τ):** {tau_stress/1e6:.2f} MPa")
-            st.info(f"**Spring Index (C = D/d):** {c_index:.2f} (Standard range: 4 to 12)")
+            st.success(f"**Torsional Shear Stress (τ):** {tau_stress/1e6:.2f} MPa")
+            st.info(f"**Spring Index (C = D/d):** {c_index:.2f}")
             add_history("Spring", f"W={w_load}N, k={k_stiffness/1000:.2f}N/mm -> τ={tau_stress/1e6:.2f}MPa")
 
-    with tab3:
-        st.subheader("Belt Drive Velocity & Speed Ratio")
+    # Tool 5: Belt Drive
+    with tab5:
+        st.subheader("Belt Drive Speed Ratio & Velocity")
         st.latex(r"N_2 = \frac{N_1 \cdot D_1}{D_2}, \quad v = \frac{\pi \cdot D_1 \cdot N_1}{60}")
         d1 = st.number_input("Driver Pulley Diameter (D₁) [mm]", min_value=1.0, value=250.0)
         n1 = st.number_input("Driver Speed (N₁) [RPM]", min_value=1.0, value=1440.0)
@@ -716,22 +772,24 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
             st.info(f"**Velocity Ratio (D₂/D₁):** {ratio:.2f} : 1")
             add_history("Belt Drive", f"D1={d1}mm, N1={n1}RPM -> N2={n2:.1f}RPM, v={belt_vel:.2f}m/s")
 
-    with tab4:
+    # Tool 6: Column Buckling
+    with tab6:
         st.subheader("Euler's Critical Buckling Load (P_cr)")
         st.latex(r"P_{cr} = \frac{\pi^2 E I}{L_e^2}")
         e_val = st.number_input("Modulus of Elasticity (E) [GPa]", min_value=1.0, value=200.0)
         i_val = st.number_input("Moment of Inertia (I) [cm⁴]", min_value=0.01, value=150.0)
-        col_l = st.number_input("Length of Column (L) [meters]", min_value=0.1, value=3.0)
+        col_l = st.number_input("Column Length (L) [meters]", min_value=0.1, value=3.0)
         end_cond = st.selectbox("End Conditions", ["Both Ends Pinned", "Both Ends Fixed", "One Fixed, One Free", "One Fixed, One Pinned"])
         
         if st.button("Calculate Buckling Load"):
             e_pa = e_val * 1e9
             i_m4 = i_val * 1e-8
             p_cr = calc_euler_buckling(e_pa, i_m4, col_l, end_cond)
-            st.success(f"**Critical Buckling Load (P_cr): {p_cr/1000:.2f} kN ({p_cr:.2f} N)**")
+            st.success(f"**Critical Buckling Load (P_cr):** {p_cr/1000:.2f} kN ({p_cr:.2f} N)")
             add_history("Buckling", f"L={col_l}m, {end_cond} -> P_cr={p_cr/1000:.2f}kN")
 
-    with tab5:
+    # Tool 7: Pressure Vessels
+    with tab7:
         st.subheader("Thin-Walled Pressure Vessel Stresses")
         st.latex(r"\sigma_h = \frac{P \cdot d}{2t}, \quad \sigma_l = \frac{P \cdot d}{4t}")
         p_in = st.number_input("Internal Pressure (P) [MPa]", min_value=0.01, value=2.0)
@@ -744,13 +802,3 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
             st.success(f"**Hoop (Circumferential) Stress (σ_h):** {sigma_h:.2f} MPa")
             st.success(f"**Longitudinal Stress (σ_l):** {sigma_l:.2f} MPa")
             add_history("Vessel Stress", f"P={p_in}MPa, d={d_in}mm -> σ_h={sigma_h:.2f}MPa")
-
-    with tab6:
-        st.subheader("Component Weight Estimator")
-        st.latex(r"\text{Mass} = \text{Volume} \times \text{Density}")
-        vol = st.number_input("Material Volume (V) [m³]", min_value=0.00001, value=0.015, format="%.5f")
-        dens = st.number_input("Density (ρ) [kg/m³]", value=7850.0)
-        if st.button("Calculate Mass & Weight"):
-            mass = calc_weight(vol, dens)
-            st.success(f"**Total Mass = {mass:.2f} kg** | **Weight = {mass * 9.81:.2f} N**")
-            add_history("Weight", f"Vol={vol}m³, ρ={dens} -> {mass:.2f}kg")
