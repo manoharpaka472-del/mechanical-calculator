@@ -112,12 +112,10 @@ selected_sidebar = st.sidebar.selectbox(
     index=module_options.index(st.session_state.module)
 )
 
-# Sync sidebar changes with session state
 if selected_sidebar != st.session_state.module:
     st.session_state.module = selected_sidebar
     st.rerun()
 
-# "Back to Main Menu" button in sidebar (always visible when inside a module)
 if st.session_state.module != "🏠 Home Menu":
     st.sidebar.divider()
     if st.sidebar.button("⬅️ Return to Main Menu", use_container_width=True, key="side_back"):
@@ -127,7 +125,6 @@ if st.session_state.module != "🏠 Home Menu":
 
 # ----------------- MAIN SCREEN ----------------- #
 
-# Back button on the main page header
 if st.session_state.module != "🏠 Home Menu":
     if st.button("⬅️ Back to Main Menu", key="top_back"):
         go_home()
@@ -168,6 +165,7 @@ elif st.session_state.module == "1. Mechanics":
     sub = st.selectbox("Select Calculation", ["Force", "Work", "Power", "Kinetic Energy"])
 
     if sub == "Force":
+        st.latex(r"F = m \times a")
         m = st.number_input("Mass (m) [kg]", min_value=0.0, value=10.0, step=0.1)
         a = st.number_input("Acceleration (a) [m/s²]", value=9.81, step=0.1)
         if st.button("Calculate"):
@@ -175,6 +173,7 @@ elif st.session_state.module == "1. Mechanics":
             st.success(f"**Force (F) = {res:.4f} N**")
 
     elif sub == "Work":
+        st.latex(r"W = F \times d")
         f = st.number_input("Force (F) [N]", value=50.0, step=1.0)
         d = st.number_input("Displacement (d) [m]", value=5.0, step=0.5)
         if st.button("Calculate"):
@@ -182,6 +181,7 @@ elif st.session_state.module == "1. Mechanics":
             st.success(f"**Work Done (W) = {res:.4f} J**")
 
     elif sub == "Power":
+        st.latex(r"P = \frac{W}{t}")
         w = st.number_input("Work (W) [J]", value=500.0, step=10.0)
         t = st.number_input("Time (t) [s]", min_value=0.0001, value=10.0, step=0.5)
         if st.button("Calculate"):
@@ -189,6 +189,7 @@ elif st.session_state.module == "1. Mechanics":
             st.success(f"**Power (P) = {res:.4f} W**")
 
     elif sub == "Kinetic Energy":
+        st.latex(r"KE = \frac{1}{2} m v^2")
         m = st.number_input("Mass (m) [kg]", min_value=0.0, value=2.0, step=0.1)
         v = st.number_input("Velocity (v) [m/s]", value=10.0, step=0.5)
         if st.button("Calculate"):
@@ -201,6 +202,7 @@ elif st.session_state.module == "2. Strength of Materials":
     sub = st.selectbox("Select Calculation", ["Stress", "Strain", "Young's Modulus"])
 
     if sub == "Stress":
+        st.latex(r"\sigma = \frac{F}{A}")
         f = st.number_input("Applied Load / Force (F) [N]", value=1000.0, step=50.0)
         a = st.number_input("Cross-sectional Area (A) [m²]", min_value=0.000001, value=0.002, format="%.6f")
         if st.button("Calculate"):
@@ -208,6 +210,7 @@ elif st.session_state.module == "2. Strength of Materials":
             st.success(f"**Stress (σ) = {res:.2f} Pa ({res / 1e6:.4f} MPa)**")
 
     elif sub == "Strain":
+        st.latex(r"\varepsilon = \frac{\Delta L}{L_0}")
         dl = st.number_input("Change in Length (ΔL) [mm]", value=0.5, step=0.05)
         l0 = st.number_input("Original Length (L₀) [mm]", min_value=0.001, value=100.0, step=1.0)
         if st.button("Calculate"):
@@ -215,6 +218,7 @@ elif st.session_state.module == "2. Strength of Materials":
             st.success(f"**Strain (ε) = {res:.6f} (dimensionless)**")
 
     elif sub == "Young's Modulus":
+        st.latex(r"E = \frac{\sigma}{\varepsilon}")
         stress = st.number_input("Stress (σ) [Pa]", value=200000000.0, step=1000000.0)
         strain = st.number_input("Strain (ε)", min_value=0.000001, value=0.001, format="%.6f")
         if st.button("Calculate"):
@@ -227,6 +231,7 @@ elif st.session_state.module == "3. Thermodynamics":
     sub = st.selectbox("Select Calculation", ["Heat Transfer", "Work Done (Constant P)", "Thermal Efficiency"])
 
     if sub == "Heat Transfer":
+        st.latex(r"Q = m \times c \times \Delta T")
         m = st.number_input("Mass (m) [kg]", min_value=0.0, value=1.0)
         cp = st.number_input("Specific Heat Capacity (c) [J/(kg·K)]", min_value=0.0, value=4184.0)
         dt = st.number_input("Temperature Difference (ΔT) [K or °C]", value=20.0)
@@ -235,6 +240,7 @@ elif st.session_state.module == "3. Thermodynamics":
             st.success(f"**Heat Transfer (Q) = {res:.2f} J ({res / 1000:.3f} kJ)**")
 
     elif sub == "Work Done (Constant P)":
+        st.latex(r"W = P \times \Delta V")
         p = st.number_input("Pressure (P) [Pa]", min_value=0.0, value=101325.0)
         dv = st.number_input("Change in Volume (ΔV) [m³]", value=0.05, format="%.4f")
         if st.button("Calculate"):
@@ -242,6 +248,7 @@ elif st.session_state.module == "3. Thermodynamics":
             st.success(f"**Work Done (W) = {res:.2f} J**")
 
     elif sub == "Thermal Efficiency":
+        st.latex(r"\eta = \left(\frac{W_{\text{net}}}{Q_{\text{in}}}\right) \times 100\%")
         wnet = st.number_input("Net Work Output (W_net) [J or kJ]", min_value=0.0, value=400.0)
         qin = st.number_input("Heat Input (Q_in) [J or kJ]", min_value=0.001, value=1000.0)
         if st.button("Calculate"):
@@ -254,6 +261,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
     sub = st.selectbox("Select Calculation", ["Pressure", "Reynolds Number", "Flow Velocity", "Discharge"])
 
     if sub == "Pressure":
+        st.latex(r"P = \frac{F}{A}")
         f = st.number_input("Normal Force (F) [N]", value=500.0)
         a = st.number_input("Area (A) [m²]", min_value=0.0001, value=0.05)
         if st.button("Calculate"):
@@ -261,6 +269,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
             st.success(f"**Pressure (P) = {res:.2f} Pa ({res / 1000:.3f} kPa)**")
 
     elif sub == "Reynolds Number":
+        st.latex(r"Re = \frac{\rho \times v \times D}{\mu}")
         rho = st.number_input("Fluid Density (ρ) [kg/m³]", min_value=0.0, value=1000.0)
         v = st.number_input("Flow Velocity (v) [m/s]", min_value=0.0, value=1.5)
         d = st.number_input("Pipe Diameter (D) [m]", min_value=0.0, value=0.05)
@@ -271,6 +280,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
             st.success(f"**Reynolds Number (Re) = {re:.2f}**\n\n*Flow Regime:* {regime}")
 
     elif sub == "Flow Velocity":
+        st.latex(r"v = \frac{Q}{A}")
         q = st.number_input("Discharge (Q) [m³/s]", min_value=0.0, value=0.05)
         a = st.number_input("Cross-sectional Area (A) [m²]", min_value=0.0001, value=0.02)
         if st.button("Calculate"):
@@ -278,6 +288,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
             st.success(f"**Flow Velocity (v) = {res:.4f} m/s**")
 
     elif sub == "Discharge":
+        st.latex(r"Q = A \times v")
         a = st.number_input("Cross-sectional Area (A) [m²]", min_value=0.0, value=0.02)
         v = st.number_input("Velocity (v) [m/s]", min_value=0.0, value=2.5)
         if st.button("Calculate"):
@@ -290,6 +301,7 @@ elif st.session_state.module == "5. Thermal Engineering":
     sub = st.selectbox("Select Calculation", ["Heat Conduction (Fourier's Law)", "COP (Refrigeration / Heat Pump)", "Heat Engine Efficiency (Carnot)"])
 
     if sub == "Heat Conduction (Fourier's Law)":
+        st.latex(r"Q = \frac{k \times A \times \Delta T}{x}")
         k = st.number_input("Thermal Conductivity (k) [W/(m·K)]", min_value=0.0, value=45.0)
         a = st.number_input("Surface Area (A) [m²]", min_value=0.0, value=2.0)
         dt = st.number_input("Temperature Difference (ΔT) [K or °C]", value=50.0)
@@ -299,6 +311,7 @@ elif st.session_state.module == "5. Thermal Engineering":
             st.success(f"**Rate of Heat Conduction (Q_cond) = {res:.2f} W**")
 
     elif sub == "COP (Refrigeration / Heat Pump)":
+        st.latex(r"COP = \frac{\text{Desired Effect}}{\text{Work Input}}")
         effect = st.number_input("Desired Effect (Cooling or Heating Q) [kW]", min_value=0.0, value=7.5)
         work = st.number_input("Work Input (W) [kW]", min_value=0.001, value=2.5)
         if st.button("Calculate"):
@@ -306,6 +319,7 @@ elif st.session_state.module == "5. Thermal Engineering":
             st.success(f"**Coefficient of Performance (COP) = {res:.2f}**")
 
     elif sub == "Heat Engine Efficiency (Carnot)":
+        st.latex(r"\eta_{\text{Carnot}} = \left(1 - \frac{T_{\text{low}}}{T_{\text{high}}}\right) \times 100\%")
         th = st.number_input("Source Temperature (T_high) [Kelvin]", min_value=0.1, value=600.0)
         tl = st.number_input("Sink Temperature (T_low) [Kelvin]", min_value=0.0, value=300.0)
         if tl >= th:
@@ -321,6 +335,7 @@ elif st.session_state.module == "6. Machine Design":
     sub = st.selectbox("Select Calculation", ["Torque from Power & RPM", "Shaft Power", "Shaft Diameter (Torsion)"])
 
     if sub == "Torque from Power & RPM":
+        st.latex(r"T = \frac{P}{\omega} = \frac{60 \times P}{2 \pi N}")
         p = st.number_input("Power (P) [Watts]", min_value=0.0, value=15000.0, step=100.0)
         n = st.number_input("Rotational Speed (N) [RPM]", min_value=0.1, value=1440.0, step=10.0)
         if st.button("Calculate"):
@@ -328,6 +343,7 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Torque (T) = {res:.2f} N·m**")
 
     elif sub == "Shaft Power":
+        st.latex(r"P = T \times \omega = \frac{2 \pi N T}{60}")
         t = st.number_input("Torque (T) [N·m]", min_value=0.0, value=99.5)
         n = st.number_input("Rotational Speed (N) [RPM]", min_value=0.0, value=1440.0)
         if st.button("Calculate"):
@@ -335,6 +351,7 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Shaft Power (P) = {res:.2f} W ({res / 1000:.3f} kW)**")
 
     elif sub == "Shaft Diameter (Torsion)":
+        st.latex(r"d = \left(\frac{16 T}{\pi \tau}\right)^{\frac{1}{3}}")
         t = st.number_input("Torque (T) [N·m]", min_value=0.0, value=250.0)
         tau = st.number_input("Allowable Shear Stress (τ) [MPa]", min_value=0.01, value=45.0)
         if st.button("Calculate"):
