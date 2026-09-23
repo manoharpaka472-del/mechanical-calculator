@@ -1,45 +1,152 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import math
 
-# Page configuration for mobile and desktop
+# Page configuration
 st.set_page_config(
-    page_title="MechCalc Pro | P. MANOHAR",
+    page_title="MechCalc 3D | P. MANOHAR",
     page_icon="⚙️",
     layout="centered"
 )
 
-# ----------------- CUSTOM STYLISH CSS ----------------- #
+# ----------------- 3D INTERACTIVE CANVAS BACKGROUND ----------------- #
+# Injects a lightweight Three.js 3D geometric grid network that moves with the mouse/touch
+threejs_canvas = """
+<div id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    const container = document.getElementById('threejs-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Create 3D Geometric Wireframe Torus
+    const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0x00f2fe, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.18 
+    });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+
+    // Create 3D Floating Particle Sphere
+    const particlesGeo = new THREE.BufferGeometry();
+    const count = 400;
+    const posArray = new Float32Array(count * 3);
+    for(let i = 0; i < count * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 50;
+    }
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMat = new THREE.PointsMaterial({
+        size: 0.25,
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.6
+    });
+    const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+    scene.add(particlesMesh);
+
+    camera.position.z = 24;
+
+    // Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+        torusKnot.rotation.x += 0.003;
+        torusKnot.rotation.y += 0.005;
+        particlesMesh.rotation.y -= 0.001;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+"""
+components.html(threejs_canvas, height=0, width=0)
+
+# ----------------- 3D GLASSMORPHISM & NEON CSS ----------------- #
 st.markdown("""
     <style>
+    /* Dark Deep-Space Background with 3D Depth */
     .stApp {
-        background: radial-gradient(circle at 10% 20%, rgb(18, 24, 38) 0%, rgb(10, 13, 20) 90.2%);
-        color: #E2E8F0;
+        background: radial-gradient(ellipse at 50% 0%, #0d1b2a 0%, #050811 100%) !important;
+        color: #f1f5f9;
     }
-    .main-card {
-        background: rgba(30, 41, 59, 0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(56, 189, 248, 0.25);
-        border-radius: 14px;
-        padding: 18px;
-        margin-bottom: 20px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* 3D Floating Glass Badge for Student Details */
+    .student-badge-3d {
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25));
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        transform: perspective(600px) translateZ(10px);
+        transition: transform 0.3s ease;
     }
-    .student-badge {
-        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-        color: white;
-        padding: 12px;
-        border-radius: 10px;
-        border-left: 5px solid #38bdf8;
-        margin-bottom: 16px;
+    .student-badge-3d:hover {
+        transform: perspective(600px) translateZ(20px);
     }
-    .history-card {
-        background-color: rgba(15, 23, 42, 0.85);
-        border-left: 4px solid #38bdf8;
-        padding: 8px 12px;
-        border-radius: 6px;
-        margin-bottom: 6px;
+
+    /* 3D Interactive Buttons */
+    div.stButton > button {
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        color: #38bdf8 !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border-radius: 12px !important;
+        padding: 10px 20px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    div.stButton > button:hover {
+        transform: translateY(-2px) scale(1.02);
+        border-color: #38bdf8 !important;
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35), 0 0 10px rgba(56, 189, 248, 0.5) !important;
+        color: #ffffff !important;
+    }
+    div.stButton > button:active {
+        transform: translateY(1px) scale(0.98);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* 3D Input & Select Boxes */
+    div[data-baseweb="input"] input, div[data-baseweb="select"] {
+        background-color: rgba(15, 23, 42, 0.75) !important;
+        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        border-radius: 10px !important;
+        color: #e2e8f0 !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* 3D Sidebar Panel */
+    section[data-testid="stSidebar"] {
+        background: rgba(10, 15, 26, 0.85) !important;
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(56, 189, 248, 0.15);
+    }
+    
+    /* Sleek Calculation Log */
+    .history-card-3d {
+        background: rgba(15, 23, 42, 0.65);
+        border-left: 3px solid #00f2fe;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 8px;
         font-family: monospace;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -99,9 +206,9 @@ def calc_shaft_dia(t, tau): return ((16 * t) / (math.pi * tau)) ** (1 / 3) if ta
 
 # ----------------- SIDEBAR HEADER & NAVIGATION ----------------- #
 st.sidebar.markdown("""
-<div style="background: rgba(14, 165, 233, 0.15); padding: 12px; border-radius: 8px; border: 1px solid #0284c7; margin-bottom: 12px;">
-    <h4 style="margin:0; color:#38bdf8;">⚙️ MECH PROJECT</h4>
-    <p style="margin:2px 0 0 0; font-size: 0.95rem;"><b>Name:</b> P . MANOHAR</p>
+<div style="background: rgba(14, 165, 233, 0.12); padding: 14px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.35); box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+    <h4 style="margin:0; color:#38bdf8; letter-spacing:1px;">⚙️ MECH PROJECT</h4>
+    <p style="margin:4px 0 0 0; font-size: 0.95rem;"><b>Developer:</b> P . MANOHAR</p>
     <p style="margin:2px 0 0 0; font-size: 0.95rem;"><b>Roll No:</b> 2505A31016</p>
 </div>
 """, unsafe_allow_html=True)
@@ -128,17 +235,17 @@ if selected_sidebar != st.session_state.module:
     st.session_state.module = selected_sidebar
     st.rerun()
 
-# Last 5 Calculations History Sidebar Display
+# Last 5 Calculations History
 st.sidebar.divider()
 st.sidebar.markdown("### 🕒 Recent History (Last 5)")
 if st.session_state.history:
     for item in st.session_state.history:
-        st.sidebar.markdown(f"<div class='history-card'>{item}</div>", unsafe_allow_html=True)
+        st.sidebar.markdown(f"<div class='history-card-3d'>{item}</div>", unsafe_allow_html=True)
     if st.sidebar.button("Clear History", use_container_width=True):
         st.session_state.history = []
         st.rerun()
 else:
-    st.sidebar.caption("No calculations recorded yet.")
+    st.sidebar.caption("No calculations saved yet.")
 
 if st.session_state.module != "🏠 Home Menu":
     st.sidebar.divider()
@@ -147,11 +254,18 @@ if st.session_state.module != "🏠 Home Menu":
         st.rerun()
 
 
-# ----------------- TOP STUDENT BANNER ----------------- #
+# ----------------- TOP STUDENT 3D BADGE ----------------- #
 st.markdown("""
-<div class="student-badge">
-    <div style="font-size: 1.15rem; font-weight: bold; letter-spacing: 0.5px;">PROJECT DEVELOPER: P . MANOHAR</div>
-    <div style="font-size: 0.95rem; opacity: 0.9;">ROLL NO: 2505A31016 | MECHANICAL ENGINEERING</div>
+<div class="student-badge-3d">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <div style="font-size: 1.2rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px;">P . MANOHAR</div>
+            <div style="font-size: 0.88rem; color: #38bdf8; font-weight: 600;">ROLL NO: 2505A31016</div>
+        </div>
+        <div style="text-align: right; font-size: 0.8rem; color: #94a3b8;">
+            Mechanical Engineering<br><span style="color:#00f2fe;">3D Interactive Edition</span>
+        </div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -166,8 +280,8 @@ if st.session_state.module != "🏠 Home Menu":
 
 # 0. HOME MENU
 if st.session_state.module == "🏠 Home Menu":
-    st.title("Mechanical Engineering Calculator")
-    st.write("Modular Engineering Calculator with dynamic formulas and calculation history.")
+    st.title("⚙️ Engineering Calculator")
+    st.write("Select a module below to begin calculations:")
 
     col1, col2 = st.columns(2)
     with col1:
