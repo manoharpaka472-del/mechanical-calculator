@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import urllib.parse
 import math
 
 # Page configuration
@@ -13,10 +12,10 @@ st.set_page_config(
 # ----------------- ATTRACTIVE WALLPAPER & VIBRANT BUTTONS CSS ----------------- #
 st.markdown("""
     <style>
-    /* Industrial Mechanical High-Tech Background */
+    /* High-resolution Dark Industrial Mechanical Turbine Background */
     .stApp {
-        background: linear-gradient(rgba(10, 14, 26, 0.88), rgba(6, 10, 20, 0.94)), 
-                    url('https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80');
+        background: linear-gradient(rgba(10, 15, 29, 0.88), rgba(4, 8, 18, 0.94)), 
+                    url('https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=1920&q=80');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -186,7 +185,6 @@ st.sidebar.markdown("""
 
 nav_options = [
     "🏠 Home Menu",
-    "📱 Mobile QR Code Scanner",
     "🎯 Class Live Demo Problems",
     "📊 Engineering Visualizer",
     "🧮 General Calculator",
@@ -267,13 +265,8 @@ if st.session_state.module == "🏠 Home Menu":
     st.title("⚙️ Engineering Calculator Dashboard")
     st.write("Launch specialized modules, tools, and visualizers below:")
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        if st.button("📱 Mobile QR Code Scanner", use_container_width=True):
-            set_module("📱 Mobile QR Code Scanner"); st.rerun()
-    with col_b:
-        if st.button("🎯 Class Live Demo Problems", use_container_width=True):
-            set_module("🎯 Class Live Demo Problems"); st.rerun()
+    if st.button("🎯 Class Live Demo Problems", use_container_width=True):
+        set_module("🎯 Class Live Demo Problems"); st.rerun()
 
     st.write("")
     col1, col2 = st.columns(2)
@@ -301,31 +294,7 @@ if st.session_state.module == "🏠 Home Menu":
     if st.button("🛠️ Mechanical Utilities (Flywheels, Couplings, Springs, Vessels)", use_container_width=True):
         set_module("🛠️ Mechanical Student Utilities"); st.rerun()
 
-# 1. LIVE QR CODE
-elif st.session_state.module == "📱 Mobile QR Code Scanner":
-    st.header("📱 Scan to Open on Smartphone")
-    st.write("Display this on the classroom projector screen for quick mobile access:")
-
-    default_url = "https://manoharpaka472-del-mechanical-calculator-app-2n151z.streamlit.app"
-    app_url = st.text_input("App URL:", value=default_url)
-
-    encoded_url = urllib.parse.quote(app_url)
-    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=06b6d4"
-
-    col_qr1, col_qr2 = st.columns([1, 1])
-    with col_qr1:
-        st.image(qr_api_link, caption="Live QR Access Code")
-    with col_qr2:
-        st.markdown(f"""
-        ### Instant Sharing:
-        1. Open camera on any Android or iOS device.
-        2. Scan the QR code to open the calculator.
-        3. All modules are 100% mobile-friendly.
-        
-        **URL:** [{app_url}]({app_url})
-        """)
-
-# 2. CLASSROOM DEMO PROBLEMS
+# 1. CLASSROOM DEMO PROBLEMS
 elif st.session_state.module == "🎯 Class Live Demo Problems":
     st.header("🎯 Preloaded Textbook Demo Problems")
     demo_choice = st.selectbox(
@@ -367,7 +336,7 @@ elif st.session_state.module == "🎯 Class Live Demo Problems":
             st.success(f"**Maximum Theoretical Efficiency (η):** {eff:.2f} %")
             add_history("Demo Carnot", f"TH=800K, TL=300K -> η={eff:.2f}%")
 
-# 3. ENGINEERING VISUALIZER
+# 2. ENGINEERING VISUALIZER
 elif st.session_state.module == "📊 Engineering Visualizer":
     st.header("📊 Interactive Engineering Visualizer")
     chart_choice = st.selectbox("Select Curve to Plot", [
@@ -400,7 +369,7 @@ elif st.session_state.module == "📊 Engineering Visualizer":
         df = pd.DataFrame({"Speed (RPM)": rpms, "Torque (N·m)": torques}).set_index("Speed (RPM)")
         st.line_chart(df)
 
-# 4. GENERAL CALCULATOR
+# 3. GENERAL CALCULATOR
 elif st.session_state.module == "🧮 General Calculator":
     st.header("🧮 General Purpose Calculator")
     op = st.selectbox("Operation", ["Addition (+)", "Subtraction (-)", "Multiplication (×)", "Division (÷)", "Power (xʸ)", "Square Root (√x)", "Modulo (%)"])
@@ -446,7 +415,7 @@ elif st.session_state.module == "🧮 General Calculator":
                     st.success(f"**{num1} % {num2} = {res}**")
                     add_history("Mod", f"{num1} % {num2} = {res}")
 
-# 5. MECHANICS
+# 4. MECHANICS
 elif st.session_state.module == "1. Mechanics":
     st.header("1. Mechanics")
     sub = st.selectbox("Select Calculation", ["Force", "Work", "Power", "Kinetic Energy"])
@@ -487,7 +456,7 @@ elif st.session_state.module == "1. Mechanics":
             st.success(f"**Kinetic Energy (KE) = {res:.4f} J**")
             add_history("KE", f"m={m}kg, v={v}m/s -> KE={res:.2f}J")
 
-# 6. STRENGTH OF MATERIALS
+# 5. STRENGTH OF MATERIALS
 elif st.session_state.module == "2. Strength of Materials":
     st.header("2. Strength of Materials")
     sub = st.selectbox("Select Calculation", ["Stress", "Strain", "Young's Modulus"])
@@ -519,7 +488,7 @@ elif st.session_state.module == "2. Strength of Materials":
             st.success(f"**Young's Modulus (E) = {res/1e9:.3f} GPa**")
             add_history("Young's Mod", f"σ={stress}Pa, ε={strain} -> E={res/1e9:.2f}GPa")
 
-# 7. THERMODYNAMICS
+# 6. THERMODYNAMICS
 elif st.session_state.module == "3. Thermodynamics":
     st.header("3. Thermodynamics")
     sub = st.selectbox("Select Calculation", ["Heat Transfer", "Work Done (Constant P)", "Thermal Efficiency"])
@@ -552,7 +521,7 @@ elif st.session_state.module == "3. Thermodynamics":
             st.success(f"**Thermal Efficiency (η) = {res:.2f} %**")
             add_history("Eff", f"W={w}J, Q={q}J -> η={res:.2f}%")
 
-# 8. FLUID MECHANICS
+# 7. FLUID MECHANICS
 elif st.session_state.module == "4. Fluid Mechanics":
     st.header("4. Fluid Mechanics")
     sub = st.selectbox("Select Calculation", ["Pressure", "Reynolds Number", "Flow Velocity", "Discharge"])
@@ -596,7 +565,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
             st.success(f"**Discharge (Q) = {res:.4f} m³/s**")
             add_history("Discharge", f"A={a}m², v={v}m/s -> Q={res:.4f}m³/s")
 
-# 9. THERMAL ENGINEERING
+# 8. THERMAL ENGINEERING
 elif st.session_state.module == "5. Thermal Engineering":
     st.header("5. Thermal Engineering")
     sub = st.selectbox("Select Calculation", ["Heat Conduction", "COP (Refrigeration)", "Carnot Efficiency"])
@@ -633,7 +602,7 @@ elif st.session_state.module == "5. Thermal Engineering":
                 st.success(f"**Carnot Efficiency = {res:.2f} %**")
                 add_history("Carnot", f"TH={th}K, TL={tl}K -> η={res:.1f}%")
 
-# 10. MACHINE DESIGN
+# 9. MACHINE DESIGN
 elif st.session_state.module == "6. Machine Design":
     st.header("6. Machine Design")
     sub = st.selectbox("Select Calculation", ["Torque from Power & RPM", "Shaft Power", "Shaft Diameter"])
@@ -665,7 +634,7 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Diameter (d) = {d*1000:.2f} mm**")
             add_history("Shaft Dia", f"T={t}Nm, τ={tau}MPa -> d={d*1000:.2f}mm")
 
-# 11. ADVANCED MECHANICAL UTILITIES (EXPANDED SUITE)
+# 10. ADVANCED MECHANICAL UTILITIES
 elif st.session_state.module == "🛠️ Mechanical Student Utilities":
     st.header("🛠️ Advanced Mechanical Student Utilities")
 
