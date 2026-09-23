@@ -1,152 +1,81 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import math
 
 # Page configuration
 st.set_page_config(
-    page_title="MechCalc 3D | P. MANOHAR",
+    page_title="MechCalc Pro | P. MANOHAR",
     page_icon="⚙️",
     layout="centered"
 )
 
-# ----------------- 3D INTERACTIVE CANVAS BACKGROUND ----------------- #
-# Injects a lightweight Three.js 3D geometric grid network that moves with the mouse/touch
-threejs_canvas = """
-<div id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-    const container = document.getElementById('threejs-canvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
-
-    // Create 3D Geometric Wireframe Torus
-    const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-    const material = new THREE.MeshBasicMaterial({ 
-        color: 0x00f2fe, 
-        wireframe: true, 
-        transparent: true, 
-        opacity: 0.18 
-    });
-    const torusKnot = new THREE.Mesh(geometry, material);
-    scene.add(torusKnot);
-
-    // Create 3D Floating Particle Sphere
-    const particlesGeo = new THREE.BufferGeometry();
-    const count = 400;
-    const posArray = new Float32Array(count * 3);
-    for(let i = 0; i < count * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 50;
-    }
-    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMat = new THREE.PointsMaterial({
-        size: 0.25,
-        color: 0x38bdf8,
-        transparent: true,
-        opacity: 0.6
-    });
-    const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
-    scene.add(particlesMesh);
-
-    camera.position.z = 24;
-
-    // Animation Loop
-    function animate() {
-        requestAnimationFrame(animate);
-        torusKnot.rotation.x += 0.003;
-        torusKnot.rotation.y += 0.005;
-        particlesMesh.rotation.y -= 0.001;
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
-"""
-components.html(threejs_canvas, height=0, width=0)
-
-# ----------------- 3D GLASSMORPHISM & NEON CSS ----------------- #
+# ----------------- ATTRACTIVE BACKGROUND & CSS ----------------- #
 st.markdown("""
     <style>
-    /* Dark Deep-Space Background with 3D Depth */
+    /* Full-screen high-tech mechanical 3D background with dark overlay */
     .stApp {
-        background: radial-gradient(ellipse at 50% 0%, #0d1b2a 0%, #050811 100%) !important;
-        color: #f1f5f9;
-    }
-    
-    /* 3D Floating Glass Badge for Student Details */
-    .student-badge-3d {
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25));
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-radius: 16px;
-        padding: 16px 20px;
-        margin-bottom: 24px;
-        transform: perspective(600px) translateZ(10px);
-        transition: transform 0.3s ease;
-    }
-    .student-badge-3d:hover {
-        transform: perspective(600px) translateZ(20px);
+        background: linear-gradient(rgba(10, 15, 29, 0.90), rgba(5, 8, 16, 0.95)), 
+                    url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #F1F5F9;
     }
 
-    /* 3D Interactive Buttons */
+    /* 3D Glassmorphic Student Header */
+    .student-badge-3d {
+        background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.25));
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 22px;
+    }
+
+    /* 3D Buttons */
     div.stButton > button {
         background: linear-gradient(145deg, #1e293b, #0f172a);
         color: #38bdf8 !important;
         border: 1px solid rgba(56, 189, 248, 0.3) !important;
-        border-radius: 12px !important;
-        padding: 10px 20px !important;
+        border-radius: 10px !important;
+        padding: 10px 18px !important;
         font-weight: 600 !important;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: all 0.2s ease !important;
     }
     div.stButton > button:hover {
-        transform: translateY(-2px) scale(1.02);
+        transform: translateY(-2px);
         border-color: #38bdf8 !important;
-        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35), 0 0 10px rgba(56, 189, 248, 0.5) !important;
+        box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4) !important;
         color: #ffffff !important;
     }
-    div.stButton > button:active {
-        transform: translateY(1px) scale(0.98);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+
+    /* Inputs and Select Boxes */
+    div[data-baseweb="input"] input, div[data-baseweb="select"] {
+        background-color: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border-radius: 8px !important;
+        color: #f8fafc !important;
     }
 
-    /* 3D Input & Select Boxes */
-    div[data-baseweb="input"] input, div[data-baseweb="select"] {
-        background-color: rgba(15, 23, 42, 0.75) !important;
-        border: 1px solid rgba(56, 189, 248, 0.25) !important;
-        border-radius: 10px !important;
-        color: #e2e8f0 !important;
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    
-    /* 3D Sidebar Panel */
+    /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background: rgba(10, 15, 26, 0.85) !important;
-        backdrop-filter: blur(20px);
-        border-right: 1px solid rgba(56, 189, 248, 0.15);
+        background: rgba(10, 15, 26, 0.9) !important;
+        backdrop-filter: blur(16px);
+        border-right: 1px solid rgba(56, 189, 248, 0.2);
     }
-    
-    /* Sleek Calculation Log */
-    .history-card-3d {
-        background: rgba(15, 23, 42, 0.65);
-        border-left: 3px solid #00f2fe;
-        border-radius: 8px;
-        padding: 10px 14px;
-        margin-bottom: 8px;
+
+    /* History Cards */
+    .history-card {
+        background: rgba(15, 23, 42, 0.85);
+        border-left: 3px solid #38bdf8;
+        border-radius: 6px;
+        padding: 8px 10px;
+        margin-bottom: 6px;
         font-family: monospace;
-        font-size: 0.88rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 0.82rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -158,9 +87,10 @@ if "module" not in st.session_state:
 if "history" not in st.session_state:
     st.session_state.history = []
 
+# Keeps the last 10 calculations
 def add_history(calc_name, formula_val):
     st.session_state.history.insert(0, f"[{calc_name}] {formula_val}")
-    if len(st.session_state.history) > 5:
+    if len(st.session_state.history) > 10:
         st.session_state.history.pop()
 
 def go_home():
@@ -203,13 +133,19 @@ def calc_torque(p, n): return (60 * p) / (2 * math.pi * n) if n > 0 else None
 def calc_shaft_power(t, n): return (2 * math.pi * n * t) / 60
 def calc_shaft_dia(t, tau): return ((16 * t) / (math.pi * tau)) ** (1 / 3) if tau > 0 else None
 
+# Additional Tools Calculations
+def calc_thermal_expansion(l0, alpha, dt): return l0 * alpha * dt
+def calc_weight(volume, density): return volume * density
 
-# ----------------- SIDEBAR HEADER & NAVIGATION ----------------- #
+
+# ----------------- SIDEBAR & NAVIGATION ----------------- #
 st.sidebar.markdown("""
-<div style="background: rgba(14, 165, 233, 0.12); padding: 14px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.35); box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-    <h4 style="margin:0; color:#38bdf8; letter-spacing:1px;">⚙️ MECH PROJECT</h4>
-    <p style="margin:4px 0 0 0; font-size: 0.95rem;"><b>Developer:</b> P . MANOHAR</p>
-    <p style="margin:2px 0 0 0; font-size: 0.95rem;"><b>Roll No:</b> 2505A31016</p>
+<div style="background: rgba(14, 165, 233, 0.12); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.35);">
+    <h4 style="margin:0; color:#38bdf8;">⚙️ STUDENT DETAILS</h4>
+    <p style="margin:3px 0 0 0; font-size: 0.9rem;"><b>Name:</b> P . MANOHAR</p>
+    <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Roll No:</b> 2505A31016</p>
+    <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Year:</b> 2nd Year</p>
+    <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Branch:</b> Mechanical Engineering</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -222,7 +158,7 @@ nav_options = [
     "4. Fluid Mechanics",
     "5. Thermal Engineering",
     "6. Machine Design",
-    "🛠️ Student Toolset & Units"
+    "🛠️ Mechanical Student Utilities"
 ]
 
 selected_sidebar = st.sidebar.selectbox(
@@ -235,17 +171,17 @@ if selected_sidebar != st.session_state.module:
     st.session_state.module = selected_sidebar
     st.rerun()
 
-# Last 5 Calculations History
+# Last 10 Calculations History Sidebar Display
 st.sidebar.divider()
-st.sidebar.markdown("### 🕒 Recent History (Last 5)")
+st.sidebar.markdown("### 🕒 Recent History (Last 10)")
 if st.session_state.history:
-    for item in st.session_state.history:
-        st.sidebar.markdown(f"<div class='history-card-3d'>{item}</div>", unsafe_allow_html=True)
+    for idx, item in enumerate(st.session_state.history, start=1):
+        st.sidebar.markdown(f"<div class='history-card'>{idx}. {item}</div>", unsafe_allow_html=True)
     if st.sidebar.button("Clear History", use_container_width=True):
         st.session_state.history = []
         st.rerun()
 else:
-    st.sidebar.caption("No calculations saved yet.")
+    st.sidebar.caption("No calculations recorded yet.")
 
 if st.session_state.module != "🏠 Home Menu":
     st.sidebar.divider()
@@ -254,16 +190,17 @@ if st.session_state.module != "🏠 Home Menu":
         st.rerun()
 
 
-# ----------------- TOP STUDENT 3D BADGE ----------------- #
+# ----------------- TOP STUDENT BADGE ----------------- #
 st.markdown("""
 <div class="student-badge-3d">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
-            <div style="font-size: 1.2rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px;">P . MANOHAR</div>
-            <div style="font-size: 0.88rem; color: #38bdf8; font-weight: 600;">ROLL NO: 2505A31016</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">P . MANOHAR</div>
+            <div style="font-size: 0.9rem; color: #38bdf8; font-weight: 600;">ROLL NO: 2505A31016</div>
         </div>
-        <div style="text-align: right; font-size: 0.8rem; color: #94a3b8;">
-            Mechanical Engineering<br><span style="color:#00f2fe;">3D Interactive Edition</span>
+        <div style="text-align: right; font-size: 0.85rem; color: #cbd5e1;">
+            <b>2nd Year</b> | Mechanical Engineering<br>
+            <span style="color:#00f2fe;">Comprehensive Engineering Suite</span>
         </div>
     </div>
 </div>
@@ -280,8 +217,8 @@ if st.session_state.module != "🏠 Home Menu":
 
 # 0. HOME MENU
 if st.session_state.module == "🏠 Home Menu":
-    st.title("⚙️ Engineering Calculator")
-    st.write("Select a module below to begin calculations:")
+    st.title("⚙️ Engineering Calculator Dashboard")
+    st.write("Select a module to launch calculations:")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -301,8 +238,8 @@ if st.session_state.module == "🏠 Home Menu":
             set_module("5. Thermal Engineering"); st.rerun()
         if st.button("6. Machine Design", use_container_width=True):
             set_module("6. Machine Design"); st.rerun()
-        if st.button("🛠️ Student Toolset & Units", use_container_width=True):
-            set_module("🛠️ Student Toolset & Units"); st.rerun()
+        if st.button("🛠️ Mechanical Student Utilities", use_container_width=True):
+            set_module("🛠️ Mechanical Student Utilities"); st.rerun()
 
 # 1. GENERAL CALCULATOR
 elif st.session_state.module == "🧮 General Calculator":
@@ -569,36 +506,79 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Diameter (d) = {d*1000:.2f} mm**")
             add_history("Shaft Dia", f"T={t}Nm, τ={tau}MPa -> d={d*1000:.2f}mm")
 
-# 8. STUDENT TOOLSET & UNITS
-elif st.session_state.module == "🛠️ Student Toolset & Units":
-    st.header("🛠️ Mechanical Student Utilities")
+# 8. MECHANICAL STUDENT UTILITIES (EXPANDED TOOLSET)
+elif st.session_state.module == "🛠️ Mechanical Student Utilities":
+    st.header("🛠️ Mechanical Engineering Toolset")
 
-    tab1, tab2 = st.tabs(["🔄 Unit Converter", "📖 Material Properties Sheet"])
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "🔄 Unit Converter", 
+        "📏 Linear Thermal Expansion", 
+        "⚖️ Weight / Density Estimator",
+        "📖 Materials & Hardness Sheet"
+    ])
 
+    # Tool 1: Unit Converter
     with tab1:
-        st.subheader("Fast Unit Converter")
-        tool = st.selectbox("Convert Type", ["Pressure (bar ↔ kPa ↔ psi)", "Power (kW ↔ HP)", "Length (inch ↔ mm)"])
+        st.subheader("Unit Converter")
+        tool = st.selectbox("Conversion Mode", ["Pressure", "Power", "Length", "Torque"])
 
-        if tool == "Pressure (bar ↔ kPa ↔ psi)":
-            val = st.number_input("Pressure value in Bar", value=1.0)
-            st.info(f"**{val} Bar** = **{val * 100:.2f} kPa** = **{val * 14.5038:.2f} psi**")
+        if tool == "Pressure":
+            val = st.number_input("Pressure in Bar", value=1.0)
+            st.info(f"**{val} Bar** = **{val * 100:.2f} kPa** = **{val * 14.5038:.2f} psi** = **{val * 0.9869:.3f} atm**")
 
-        elif tool == "Power (kW ↔ HP)":
+        elif tool == "Power":
             val = st.number_input("Power in Kilowatts (kW)", value=1.0)
-            st.info(f"**{val} kW** = **{val * 1.34102:.3f} Metric HP (Horsepower)**")
+            st.info(f"**{val} kW** = **{val * 1.34102:.3f} HP (Horsepower)** = **{val * 1000:.1f} W**")
 
-        elif tool == "Length (inch ↔ mm)":
+        elif tool == "Length":
             val = st.number_input("Length in Inches", value=1.0)
-            st.info(f"**{val} in** = **{val * 25.4:.2f} mm**")
+            st.info(f"**{val} in** = **{val * 25.4:.2f} mm** = **{val * 0.0254:.4f} m**")
 
+        elif tool == "Torque":
+            val = st.number_input("Torque in N·m", value=10.0)
+            st.info(f"**{val} N·m** = **{val * 0.73756:.3f} lbf·ft** = **{val * 8.8507:.2f} lbf·in**")
+
+    # Tool 2: Linear Thermal Expansion
     with tab2:
-        st.subheader("Common Engineering Materials")
+        st.subheader("Linear Thermal Expansion Calculator")
+        st.latex(r"\Delta L = L_0 \times \alpha \times \Delta T")
+        l0 = st.number_input("Initial Length (L₀) [meters]", min_value=0.001, value=2.0)
+        alpha = st.number_input("Coeff. of Thermal Expansion (α) [10⁻⁶ / °C]", value=12.0) # Steel is ~12
+        dt = st.number_input("Temperature Rise (ΔT) [°C]", value=50.0)
+        if st.button("Calculate Elongation"):
+            dl = calc_thermal_expansion(l0, alpha * 1e-6, dt)
+            dl_mm = dl * 1000
+            st.success(f"**Total Expansion (ΔL) = {dl_mm:.3f} mm ({dl:.6f} m)**")
+            add_history("Thermal Exp", f"L0={l0}m, ΔT={dt}°C -> ΔL={dl_mm:.2f}mm")
+
+    # Tool 3: Weight Estimator
+    with tab3:
+        st.subheader("Component Weight Estimator")
+        st.latex(r"\text{Mass} = \text{Volume} \times \text{Density}")
+        vol = st.number_input("Material Volume (V) [m³]", min_value=0.00001, value=0.015, format="%.5f")
+        dens = st.number_input("Density (ρ) [kg/m³]", value=7850.0) # Steel
+        if st.button("Calculate Mass & Weight"):
+            mass = calc_weight(vol, dens)
+            weight_n = mass * 9.81
+            st.success(f"**Total Mass = {mass:.2f} kg** | **Weight = {weight_n:.2f} N**")
+            add_history("Weight", f"Vol={vol}m³, ρ={dens} -> {mass:.2f}kg")
+
+    # Tool 4: Material & Hardness Reference
+    with tab4:
+        st.subheader("Standard Engineering Materials")
         st.markdown("""
-        | Material | Density (kg/m³) | Young's Modulus (E) | Yield Strength (MPa) |
-        | :--- | :--- | :--- | :--- |
-        | **Structural Steel** | 7850 | 200 GPa | 250 |
-        | **Aluminum (6061-T6)**| 2700 | 69 GPa | 276 |
-        | **Cast Iron** | 7200 | 110 GPa | 130 |
-        | **Titanium Alloy** | 4430 | 114 GPa | 830 |
-        | **Copper** | 8960 | 117 GPa | 70 |
+        | Material | Density (kg/m³) | Young's Modulus (E) | Yield Strength (MPa) | Thermal Coeff (α × 10⁻⁶/°C) |
+        | :--- | :--- | :--- | :--- | :--- |
+        | **Mild Steel** | 7850 | 200 GPa | 250 | 12.0 |
+        | **Stainless Steel (304)** | 8000 | 193 GPa | 215 | 17.3 |
+        | **Aluminum 6061-T6** | 2700 | 69 GPa | 276 | 23.0 |
+        | **Cast Iron (Gray)** | 7200 | 110 GPa | 130 | 11.0 |
+        | **Brass** | 8500 | 100 GPa | 200 | 19.0 |
+        """)
+        
+        st.subheader("Quick Hardness Scale Guide")
+        st.markdown("""
+        - **Brinell (HB)**: Best for castings, forgings, and thick rough structures.
+        - **Rockwell (HRC / HRB)**: Fast test; HRC used for heat-treated hard steels, HRB for softer alloys.
+        - **Vickers (HV)**: Ideal for microscopic layers, thin sheets, and surface coatings.
         """)
