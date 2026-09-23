@@ -25,8 +25,8 @@ st.markdown("""
 
     /* 3D Glassmorphic Student Header */
     .student-badge-3d {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(14, 165, 233, 0.28));
-        border: 1px solid rgba(245, 158, 11, 0.55);
+        background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(14, 165, 233, 0.28));
+        border: 1px solid rgba(34, 211, 238, 0.55);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
@@ -35,24 +35,24 @@ st.markdown("""
         margin-bottom: 22px;
     }
 
-    /* VIBRANT CONTRASTING BUTTONS (Electric Gold & Amber Glow) */
+    /* VIBRANT ELECTRIC NEON CYAN BUTTONS */
     div.stButton > button {
-        background: linear-gradient(145deg, #f59e0b, #d97706) !important;
-        color: #0f172a !important;
-        border: 1px solid #fde68a !important;
+        background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+        color: #ffffff !important;
+        border: 1px solid #67e8f9 !important;
         border-radius: 12px !important;
         padding: 10px 20px !important;
         font-weight: 700 !important;
-        letter-spacing: 0.4px !important;
-        box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+        letter-spacing: 0.5px !important;
+        box-shadow: 0 6px 18px rgba(6, 182, 212, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     div.stButton > button:hover {
         transform: translateY(-2px) scale(1.02);
-        background: linear-gradient(145deg, #fbbf24, #f59e0b) !important;
+        background: linear-gradient(135deg, #22d3ee, #06b6d4) !important;
         border-color: #ffffff !important;
-        box-shadow: 0 10px 25px rgba(245, 158, 11, 0.65), 0 0 15px rgba(251, 191, 36, 0.5) !important;
-        color: #000000 !important;
+        box-shadow: 0 10px 25px rgba(6, 182, 212, 0.65), 0 0 15px rgba(103, 232, 249, 0.6) !important;
+        color: #ffffff !important;
     }
     div.stButton > button:active {
         transform: translateY(1px) scale(0.98);
@@ -61,7 +61,7 @@ st.markdown("""
     /* 3D Inputs */
     div[data-baseweb="input"] input, div[data-baseweb="select"] {
         background-color: rgba(15, 23, 42, 0.9) !important;
-        border: 1px solid rgba(245, 158, 11, 0.4) !important;
+        border: 1px solid rgba(6, 182, 212, 0.4) !important;
         border-radius: 8px !important;
         color: #f8fafc !important;
     }
@@ -70,13 +70,13 @@ st.markdown("""
     section[data-testid="stSidebar"] {
         background: rgba(10, 15, 28, 0.95) !important;
         backdrop-filter: blur(16px);
-        border-right: 1px solid rgba(245, 158, 11, 0.25);
+        border-right: 1px solid rgba(6, 182, 212, 0.25);
     }
 
     /* Calculation History Box */
     .history-card {
         background: rgba(15, 23, 42, 0.9);
-        border-left: 3px solid #f59e0b;
+        border-left: 3px solid #06b6d4;
         border-radius: 6px;
         padding: 8px 10px;
         margin-bottom: 6px;
@@ -157,10 +157,7 @@ def calc_belt_drive(d1, n1, d2):
     velocity = (math.pi * (d1 / 1000) * n1) / 60
     return n2, velocity
 
-# Additional Mechanical Tools
 def calc_flywheel(mass, k_radius, rpm, cs):
-    # I = m * k^2, omega = (2*pi*N)/60
-    # E_k = 0.5 * I * omega^2,  delta_E = I * omega^2 * Cs
     omega = (2 * math.pi * rpm) / 60
     i_inertia = mass * (k_radius ** 2)
     e_kin = 0.5 * i_inertia * (omega ** 2)
@@ -168,7 +165,6 @@ def calc_flywheel(mass, k_radius, rpm, cs):
     return i_inertia, e_kin, delta_e
 
 def calc_flange_coupling(d_shaft):
-    # Standard empirical proportions for rigid flange coupling
     d_hub = 2 * d_shaft
     l_hub = 1.5 * d_shaft
     d_pitch = 3 * d_shaft
@@ -179,8 +175,8 @@ def calc_flange_coupling(d_shaft):
 
 # ----------------- SIDEBAR PROFILE & NAVIGATION ----------------- #
 st.sidebar.markdown("""
-<div style="background: rgba(245, 158, 11, 0.14); padding: 12px; border-radius: 10px; border: 1px solid rgba(245, 158, 11, 0.45);">
-    <h4 style="margin:0; color:#fbbf24;">⚙️ STUDENT DETAILS</h4>
+<div style="background: rgba(6, 182, 212, 0.14); padding: 12px; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.45);">
+    <h4 style="margin:0; color:#22d3ee;">⚙️ STUDENT DETAILS</h4>
     <p style="margin:3px 0 0 0; font-size: 0.9rem;"><b>Name:</b> P . MANOHAR</p>
     <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Roll No:</b> 2505A31016</p>
     <p style="margin:2px 0 0 0; font-size: 0.9rem;"><b>Year:</b> 2nd Year</p>
@@ -247,11 +243,11 @@ st.markdown("""
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
             <div style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">P . MANOHAR</div>
-            <div style="font-size: 0.9rem; color: #fbbf24; font-weight: 600;">ROLL NO: 2505A31016</div>
+            <div style="font-size: 0.9rem; color: #22d3ee; font-weight: 600;">ROLL NO: 2505A31016</div>
         </div>
         <div style="text-align: right; font-size: 0.85rem; color: #cbd5e1;">
             <b>2nd Year</b> | Mechanical Engineering<br>
-            <span style="color:#f59e0b;">Turbine Machinery Suite</span>
+            <span style="color:#06b6d4;">Turbine Machinery Suite</span>
         </div>
     </div>
 </div>
@@ -314,7 +310,7 @@ elif st.session_state.module == "📱 Mobile QR Code Scanner":
     app_url = st.text_input("App URL:", value=default_url)
 
     encoded_url = urllib.parse.quote(app_url)
-    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=f59e0b"
+    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=06b6d4"
 
     col_qr1, col_qr2 = st.columns([1, 1])
     with col_qr1:
