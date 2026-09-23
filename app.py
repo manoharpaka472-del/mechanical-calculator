@@ -1,4 +1,5 @@
 import streamlit as st
+import urllib.parse
 import math
 
 # Page configuration
@@ -8,10 +9,10 @@ st.set_page_config(
     layout="centered"
 )
 
-# ----------------- ATTRACTIVE BACKGROUND & CSS ----------------- #
+# ----------------- ATTRACTIVE 3D / BLUEPRINT STYLING ----------------- #
 st.markdown("""
     <style>
-    /* Full-screen high-tech mechanical 3D background with dark overlay */
+    /* 3D Blueprint Dark Background Overlay */
     .stApp {
         background: linear-gradient(rgba(10, 15, 29, 0.90), rgba(5, 8, 16, 0.95)), 
                     url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1920&q=80');
@@ -33,7 +34,7 @@ st.markdown("""
         margin-bottom: 22px;
     }
 
-    /* 3D Buttons */
+    /* Interactive 3D Buttons */
     div.stButton > button {
         background: linear-gradient(145deg, #1e293b, #0f172a);
         color: #38bdf8 !important;
@@ -51,7 +52,7 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Inputs and Select Boxes */
+    /* 3D Inputs */
     div[data-baseweb="input"] input, div[data-baseweb="select"] {
         background-color: rgba(15, 23, 42, 0.8) !important;
         border: 1px solid rgba(56, 189, 248, 0.3) !important;
@@ -59,14 +60,14 @@ st.markdown("""
         color: #f8fafc !important;
     }
 
-    /* Sidebar Styling */
+    /* Sidebar Glass Styling */
     section[data-testid="stSidebar"] {
         background: rgba(10, 15, 26, 0.9) !important;
         backdrop-filter: blur(16px);
         border-right: 1px solid rgba(56, 189, 248, 0.2);
     }
 
-    /* History Cards */
+    /* Calculation History Box */
     .history-card {
         background: rgba(15, 23, 42, 0.85);
         border-left: 3px solid #38bdf8;
@@ -80,14 +81,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ----------------- SESSION STATE SETUP ----------------- #
+# ----------------- SESSION STATE & NAVIGATION ----------------- #
 if "module" not in st.session_state:
     st.session_state.module = "🏠 Home Menu"
 
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# Keeps the last 10 calculations
 def add_history(calc_name, formula_val):
     st.session_state.history.insert(0, f"[{calc_name}] {formula_val}")
     if len(st.session_state.history) > 10:
@@ -133,12 +133,12 @@ def calc_torque(p, n): return (60 * p) / (2 * math.pi * n) if n > 0 else None
 def calc_shaft_power(t, n): return (2 * math.pi * n * t) / 60
 def calc_shaft_dia(t, tau): return ((16 * t) / (math.pi * tau)) ** (1 / 3) if tau > 0 else None
 
-# Additional Tools Calculations
+# Extended Utilities
 def calc_thermal_expansion(l0, alpha, dt): return l0 * alpha * dt
 def calc_weight(volume, density): return volume * density
 
 
-# ----------------- SIDEBAR & NAVIGATION ----------------- #
+# ----------------- SIDEBAR & STUDENT IDENTITY ----------------- #
 st.sidebar.markdown("""
 <div style="background: rgba(14, 165, 233, 0.12); padding: 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.35);">
     <h4 style="margin:0; color:#38bdf8;">⚙️ STUDENT DETAILS</h4>
@@ -151,6 +151,8 @@ st.sidebar.markdown("""
 
 nav_options = [
     "🏠 Home Menu",
+    "📱 Mobile QR Code Scanner",
+    "🎯 Class Live Demo Problems",
     "🧮 General Calculator",
     "1. Mechanics",
     "2. Strength of Materials",
@@ -171,7 +173,7 @@ if selected_sidebar != st.session_state.module:
     st.session_state.module = selected_sidebar
     st.rerun()
 
-# Last 10 Calculations History Sidebar Display
+# Last 10 Calculations History
 st.sidebar.divider()
 st.sidebar.markdown("### 🕒 Recent History (Last 10)")
 if st.session_state.history:
@@ -200,7 +202,7 @@ st.markdown("""
         </div>
         <div style="text-align: right; font-size: 0.85rem; color: #cbd5e1;">
             <b>2nd Year</b> | Mechanical Engineering<br>
-            <span style="color:#00f2fe;">Comprehensive Engineering Suite</span>
+            <span style="color:#00f2fe;">Comprehensive Engineering Calculator</span>
         </div>
     </div>
 </div>
@@ -218,8 +220,17 @@ if st.session_state.module != "🏠 Home Menu":
 # 0. HOME MENU
 if st.session_state.module == "🏠 Home Menu":
     st.title("⚙️ Engineering Calculator Dashboard")
-    st.write("Select a module to launch calculations:")
+    st.write("Welcome! Select a module or launch interactive presentation features below:")
 
+    col_a, col_b = st.columns(2)
+    with col_a:
+        if st.button("📱 Scan QR Code on Mobile", use_container_width=True):
+            set_module("📱 Mobile QR Code Scanner"); st.rerun()
+    with col_b:
+        if st.button("🎯 Class Live Demo Problems", use_container_width=True):
+            set_module("🎯 Class Live Demo Problems"); st.rerun()
+
+    st.write("")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🧮 General Calculator", use_container_width=True):
@@ -238,10 +249,79 @@ if st.session_state.module == "🏠 Home Menu":
             set_module("5. Thermal Engineering"); st.rerun()
         if st.button("6. Machine Design", use_container_width=True):
             set_module("6. Machine Design"); st.rerun()
-        if st.button("🛠️ Mechanical Student Utilities", use_container_width=True):
+        if st.button("🛠️ Student Utilities", use_container_width=True):
             set_module("🛠️ Mechanical Student Utilities"); st.rerun()
 
-# 1. GENERAL CALCULATOR
+# 1. LIVE QR CODE GENERATOR (FOR CLASSROOM DISPLAY)
+elif st.session_state.module == "📱 Mobile QR Code Scanner":
+    st.header("📱 Scan to Open on Smartphone")
+    st.write("Display this on the projector screen so your teacher and peers can open the calculator simultaneously:")
+
+    default_url = "https://manoharpaka472-del-mechanical-calculator-app-2n151z.streamlit.app"
+    app_url = st.text_input("Streamlit App URL (Confirm or update link):", value=default_url)
+
+    # Generate QR Code image dynamically via public QR API
+    encoded_url = urllib.parse.quote(app_url)
+    qr_api_link = f"https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={encoded_url}&bgcolor=0b1120&color=38bdf8"
+
+    col_qr1, col_qr2 = st.columns([1, 1])
+    with col_qr1:
+        st.image(qr_api_link, caption="Scan with any smartphone camera")
+    with col_qr2:
+        st.markdown(f"""
+        ### Quick Share:
+        1. Point your phone camera at the QR code.
+        2. Tap the pop-up link to run the calculator instantly.
+        3. Works seamlessly on **Android & iOS**.
+        
+        **Link:** [{app_url}]({app_url})
+        """)
+
+# 2. CLASSROOM DEMO PROBLEMS (PRELOADED TEXTBOOK EXAMPLES)
+elif st.session_state.module == "🎯 Class Live Demo Problems":
+    st.header("🎯 Preloaded Textbook Demo Problems")
+    st.write("Select a standard problem from the 2nd-year curriculum to demonstrate calculations instantly:")
+
+    demo_choice = st.selectbox(
+        "Choose Textbook Scenario",
+        [
+            "1. Strength of Materials: Mild Steel Tie Rod under Axial Load",
+            "2. Fluid Mechanics: Pipe Flow Regime (Reynolds Number)",
+            "3. Thermodynamics: Carnot Engine Thermal Efficiency"
+        ]
+    )
+
+    if demo_choice == "1. Strength of Materials: Mild Steel Tie Rod under Axial Load":
+        st.info("**Problem Statement:** A 20 mm diameter steel rod is subjected to an axial pull of 45 kN. Find the induced tensile stress.")
+        st.latex(r"\sigma = \frac{F}{A} = \frac{45000}{\frac{\pi}{4}(0.02)^2}")
+        if st.button("Solve Step-by-Step"):
+            d = 0.02  # meters
+            area = (math.pi / 4) * (d ** 2)
+            force = 45000  # N
+            stress = calc_stress(force, area)
+            st.success(f"**Calculated Cross-sectional Area:** {area:.6f} m²")
+            st.success(f"**Resulting Stress (σ):** {stress/1e6:.2f} MPa ({stress:.2f} Pa)")
+            add_history("Demo Stress", f"F=45kN, d=20mm -> σ={stress/1e6:.2f}MPa")
+
+    elif demo_choice == "2. Fluid Mechanics: Pipe Flow Regime (Reynolds Number)":
+        st.info("**Problem Statement:** Water (ρ = 1000 kg/m³, μ = 0.001 Pa·s) flows at 0.08 m/s through a 25 mm internal diameter tube. Classify the flow regime.")
+        st.latex(r"Re = \frac{\rho \times v \times D}{\mu}")
+        if st.button("Solve Step-by-Step"):
+            re = calc_reynolds(1000, 0.08, 0.025, 0.001)
+            regime = "Laminar Flow (Re < 2300)" if re < 2300 else "Turbulent Flow"
+            st.success(f"**Reynolds Number (Re):** {re:.2f}")
+            st.success(f"**Flow Regime Assessment:** {regime}")
+            add_history("Demo Reynolds", f"v=0.08m/s, D=25mm -> Re={re:.1f} ({regime})")
+
+    elif demo_choice == "3. Thermodynamics: Carnot Engine Thermal Efficiency":
+        st.info("**Problem Statement:** A heat engine receives heat at 800 K and rejects heat to a reservoir at 300 K. Determine the maximum theoretical efficiency.")
+        st.latex(r"\eta_{\text{Carnot}} = \left(1 - \frac{T_L}{T_H}\right) \times 100\%")
+        if st.button("Solve Step-by-Step"):
+            eff = calc_heat_engine_eff(800.0, 300.0)
+            st.success(f"**Maximum Theoretical Efficiency (η):** {eff:.2f} %")
+            add_history("Demo Carnot", f"TH=800K, TL=300K -> η={eff:.2f}%")
+
+# 3. GENERAL CALCULATOR
 elif st.session_state.module == "🧮 General Calculator":
     st.header("🧮 General Purpose Calculator")
     op = st.selectbox("Operation", ["Addition (+)", "Subtraction (-)", "Multiplication (×)", "Division (÷)", "Power (xʸ)", "Square Root (√x)", "Modulo (%)"])
@@ -287,7 +367,7 @@ elif st.session_state.module == "🧮 General Calculator":
                     st.success(f"**{num1} % {num2} = {res}**")
                     add_history("Mod", f"{num1} % {num2} = {res}")
 
-# 2. MECHANICS
+# 4. MECHANICS
 elif st.session_state.module == "1. Mechanics":
     st.header("1. Mechanics")
     sub = st.selectbox("Select Calculation", ["Force", "Work", "Power", "Kinetic Energy"])
@@ -328,7 +408,7 @@ elif st.session_state.module == "1. Mechanics":
             st.success(f"**Kinetic Energy (KE) = {res:.4f} J**")
             add_history("KE", f"m={m}kg, v={v}m/s -> KE={res:.2f}J")
 
-# 3. STRENGTH OF MATERIALS
+# 5. STRENGTH OF MATERIALS
 elif st.session_state.module == "2. Strength of Materials":
     st.header("2. Strength of Materials")
     sub = st.selectbox("Select Calculation", ["Stress", "Strain", "Young's Modulus"])
@@ -360,7 +440,7 @@ elif st.session_state.module == "2. Strength of Materials":
             st.success(f"**Young's Modulus (E) = {res/1e9:.3f} GPa**")
             add_history("Young's Mod", f"σ={stress}Pa, ε={strain} -> E={res/1e9:.2f}GPa")
 
-# 4. THERMODYNAMICS
+# 6. THERMODYNAMICS
 elif st.session_state.module == "3. Thermodynamics":
     st.header("3. Thermodynamics")
     sub = st.selectbox("Select Calculation", ["Heat Transfer", "Work Done (Constant P)", "Thermal Efficiency"])
@@ -393,7 +473,7 @@ elif st.session_state.module == "3. Thermodynamics":
             st.success(f"**Thermal Efficiency (η) = {res:.2f} %**")
             add_history("Eff", f"W={w}J, Q={q}J -> η={res:.2f}%")
 
-# 5. FLUID MECHANICS
+# 7. FLUID MECHANICS
 elif st.session_state.module == "4. Fluid Mechanics":
     st.header("4. Fluid Mechanics")
     sub = st.selectbox("Select Calculation", ["Pressure", "Reynolds Number", "Flow Velocity", "Discharge"])
@@ -415,7 +495,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
         mu = st.number_input("Viscosity (μ) [Pa·s]", min_value=0.000001, value=0.001, format="%.6f")
         if st.button("Calculate"):
             re = calc_reynolds(rho, v, d, mu)
-            regime = "Laminar" if re < 2300 else ("Turbulent" if re > 4000 else "Transitional")
+            regime = "Laminar Flow (Re < 2300)" if re < 2300 else ("Turbulent Flow (Re > 4000)" if re > 4000 else "Transitional Flow")
             st.success(f"**Reynolds Number (Re) = {re:.2f} ({regime})**")
             add_history("Reynolds", f"v={v}m/s, D={d}m -> Re={re:.1f}")
 
@@ -437,7 +517,7 @@ elif st.session_state.module == "4. Fluid Mechanics":
             st.success(f"**Discharge (Q) = {res:.4f} m³/s**")
             add_history("Discharge", f"A={a}m², v={v}m/s -> Q={res:.4f}m³/s")
 
-# 6. THERMAL ENGINEERING
+# 8. THERMAL ENGINEERING
 elif st.session_state.module == "5. Thermal Engineering":
     st.header("5. Thermal Engineering")
     sub = st.selectbox("Select Calculation", ["Heat Conduction", "COP (Refrigeration)", "Carnot Efficiency"])
@@ -474,7 +554,7 @@ elif st.session_state.module == "5. Thermal Engineering":
                 st.success(f"**Carnot Efficiency = {res:.2f} %**")
                 add_history("Carnot", f"TH={th}K, TL={tl}K -> η={res:.1f}%")
 
-# 7. MACHINE DESIGN
+# 9. MACHINE DESIGN
 elif st.session_state.module == "6. Machine Design":
     st.header("6. Machine Design")
     sub = st.selectbox("Select Calculation", ["Torque from Power & RPM", "Shaft Power", "Shaft Diameter"])
@@ -506,7 +586,7 @@ elif st.session_state.module == "6. Machine Design":
             st.success(f"**Diameter (d) = {d*1000:.2f} mm**")
             add_history("Shaft Dia", f"T={t}Nm, τ={tau}MPa -> d={d*1000:.2f}mm")
 
-# 8. MECHANICAL STUDENT UTILITIES (EXPANDED TOOLSET)
+# 10. STUDENT UTILITIES
 elif st.session_state.module == "🛠️ Mechanical Student Utilities":
     st.header("🛠️ Mechanical Engineering Toolset")
 
@@ -517,55 +597,45 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
         "📖 Materials & Hardness Sheet"
     ])
 
-    # Tool 1: Unit Converter
     with tab1:
         st.subheader("Unit Converter")
         tool = st.selectbox("Conversion Mode", ["Pressure", "Power", "Length", "Torque"])
-
         if tool == "Pressure":
             val = st.number_input("Pressure in Bar", value=1.0)
             st.info(f"**{val} Bar** = **{val * 100:.2f} kPa** = **{val * 14.5038:.2f} psi** = **{val * 0.9869:.3f} atm**")
-
         elif tool == "Power":
             val = st.number_input("Power in Kilowatts (kW)", value=1.0)
             st.info(f"**{val} kW** = **{val * 1.34102:.3f} HP (Horsepower)** = **{val * 1000:.1f} W**")
-
         elif tool == "Length":
             val = st.number_input("Length in Inches", value=1.0)
             st.info(f"**{val} in** = **{val * 25.4:.2f} mm** = **{val * 0.0254:.4f} m**")
-
         elif tool == "Torque":
             val = st.number_input("Torque in N·m", value=10.0)
             st.info(f"**{val} N·m** = **{val * 0.73756:.3f} lbf·ft** = **{val * 8.8507:.2f} lbf·in**")
 
-    # Tool 2: Linear Thermal Expansion
     with tab2:
-        st.subheader("Linear Thermal Expansion Calculator")
+        st.subheader("Linear Thermal Expansion")
         st.latex(r"\Delta L = L_0 \times \alpha \times \Delta T")
-        l0 = st.number_input("Initial Length (L₀) [meters]", min_value=0.001, value=2.0)
-        alpha = st.number_input("Coeff. of Thermal Expansion (α) [10⁻⁶ / °C]", value=12.0) # Steel is ~12
+        l0 = st.number_input("Initial Length (L₀) [m]", min_value=0.001, value=2.0)
+        alpha = st.number_input("Coeff. of Thermal Expansion (α) [10⁻⁶ / °C]", value=12.0)
         dt = st.number_input("Temperature Rise (ΔT) [°C]", value=50.0)
         if st.button("Calculate Elongation"):
             dl = calc_thermal_expansion(l0, alpha * 1e-6, dt)
-            dl_mm = dl * 1000
-            st.success(f"**Total Expansion (ΔL) = {dl_mm:.3f} mm ({dl:.6f} m)**")
-            add_history("Thermal Exp", f"L0={l0}m, ΔT={dt}°C -> ΔL={dl_mm:.2f}mm")
+            st.success(f"**Total Expansion (ΔL) = {dl*1000:.3f} mm**")
+            add_history("Thermal Exp", f"L0={l0}m, ΔT={dt}°C -> ΔL={dl*1000:.2f}mm")
 
-    # Tool 3: Weight Estimator
     with tab3:
         st.subheader("Component Weight Estimator")
         st.latex(r"\text{Mass} = \text{Volume} \times \text{Density}")
         vol = st.number_input("Material Volume (V) [m³]", min_value=0.00001, value=0.015, format="%.5f")
-        dens = st.number_input("Density (ρ) [kg/m³]", value=7850.0) # Steel
+        dens = st.number_input("Density (ρ) [kg/m³]", value=7850.0)
         if st.button("Calculate Mass & Weight"):
             mass = calc_weight(vol, dens)
-            weight_n = mass * 9.81
-            st.success(f"**Total Mass = {mass:.2f} kg** | **Weight = {weight_n:.2f} N**")
+            st.success(f"**Total Mass = {mass:.2f} kg** | **Weight = {mass * 9.81:.2f} N**")
             add_history("Weight", f"Vol={vol}m³, ρ={dens} -> {mass:.2f}kg")
 
-    # Tool 4: Material & Hardness Reference
     with tab4:
-        st.subheader("Standard Engineering Materials")
+        st.subheader("Standard Engineering Materials Reference")
         st.markdown("""
         | Material | Density (kg/m³) | Young's Modulus (E) | Yield Strength (MPa) | Thermal Coeff (α × 10⁻⁶/°C) |
         | :--- | :--- | :--- | :--- | :--- |
@@ -574,11 +644,4 @@ elif st.session_state.module == "🛠️ Mechanical Student Utilities":
         | **Aluminum 6061-T6** | 2700 | 69 GPa | 276 | 23.0 |
         | **Cast Iron (Gray)** | 7200 | 110 GPa | 130 | 11.0 |
         | **Brass** | 8500 | 100 GPa | 200 | 19.0 |
-        """)
-        
-        st.subheader("Quick Hardness Scale Guide")
-        st.markdown("""
-        - **Brinell (HB)**: Best for castings, forgings, and thick rough structures.
-        - **Rockwell (HRC / HRB)**: Fast test; HRC used for heat-treated hard steels, HRB for softer alloys.
-        - **Vickers (HV)**: Ideal for microscopic layers, thin sheets, and surface coatings.
         """)
