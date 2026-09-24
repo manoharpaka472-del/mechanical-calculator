@@ -3,12 +3,12 @@ import math
 
 # Page setup
 st.set_page_config(
-    page_title="Mechanical Engineering Portal",
+    page_title="P. MANOHAR - Mechanical Portal",
     page_icon="⚙️",
     layout="centered"
 )
 
-# ----------------- SESSION STATE & HISTORY ----------------- #
+# ----------------- SESSION STATE & 10-ITEM HISTORY ----------------- #
 if "module" not in st.session_state:
     st.session_state.module = "🏠 Home Menu"
 
@@ -17,7 +17,7 @@ if "calc_history" not in st.session_state:
 
 def add_history(entry_text):
     st.session_state.calc_history.insert(0, entry_text)
-    if len(st.session_state.calc_history) > 5:
+    if len(st.session_state.calc_history) > 10:
         st.session_state.calc_history.pop()
 
 def go_home():
@@ -26,60 +26,71 @@ def go_home():
 def set_module(name):
     st.session_state.module = name
 
-# ----------------- CUSTOM 3D CSS & DARK STYLING ----------------- #
+# ----------------- 3D STYLING & BACKGROUND CSS ----------------- #
 st.markdown("""
 <style>
-    /* Dark Metallic Background */
+    /* High-Tech Industrial Carbon-Slate Radial Gradient Background */
     .stApp {
-        background: radial-gradient(circle at 50% 10%, #1e293b 0%, #0f172a 100%);
-        color: #f8fafc;
-        font-family: 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at 50% 15%, #1e2638 0%, #0b0f19 100%);
+        color: #f1f5f9;
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     }
 
-    /* Student Profile Badge */
+    /* Student Profile Badge Card */
     .student-badge {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        border-radius: 14px;
-        padding: 16px 20px;
+        background: linear-gradient(135deg, rgba(23, 37, 84, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+        border: 2px solid #f59e0b;
+        border-radius: 16px;
+        padding: 18px 24px;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .badge-name {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #38bdf8;
-        letter-spacing: 0.5px;
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #fbbf24;
+        letter-spacing: 0.8px;
     }
     .badge-sub {
-        font-size: 0.95rem;
-        color: #94a3b8;
-        margin-top: 4px;
+        font-size: 0.98rem;
+        color: #cbd5e1;
+        margin-top: 6px;
     }
 
-    /* 3D Tactile Buttons */
+    /* 3D Tactile Buttons - Industrial Ember Gold / Orange */
     div.stButton > button {
-        background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        background: linear-gradient(180deg, #f59e0b 0%, #d97706 50%, #b45309 100%) !important;
         color: #ffffff !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         border: none !important;
-        border-radius: 8px !important;
-        padding: 10px 20px !important;
-        box-shadow: 0 4px 0 #1e40af, 0 8px 12px rgba(0, 0, 0, 0.4) !important;
-        transition: all 0.1s ease-in-out !important;
+        border-radius: 10px !important;
+        padding: 12px 22px !important;
+        box-shadow: 0 5px 0 #78350f, 0 10px 18px rgba(0, 0, 0, 0.55) !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+        transition: all 0.08s ease-in-out !important;
     }
     div.stButton > button:hover {
-        background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%) !important;
-        transform: translateY(-1px);
+        background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+        transform: translateY(-1px) !important;
     }
     div.stButton > button:active {
         transform: translateY(4px) !important;
-        box-shadow: 0 0 0 #1e40af, 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 1px 0 #78350f, 0 3px 6px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Visual Demo / Lab Display Card */
+    .demo-card {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ----------------- PROFILE BANNER ----------------- #
+# ----------------- PROFILE HEADER ----------------- #
 st.markdown("""
 <div class="student-badge">
     <div class="badge-name">👨‍🎓 P . MANOHAR</div>
@@ -128,9 +139,18 @@ def calc_shaft_power(t, rpm):
 def calc_shaft_diameter(t, tau):
     return ((16 * t) / (math.pi * tau)) ** (1 / 3) if tau > 0 else None
 
+# Classroom Simulations
+def calc_beam_center_load(load_n, length_m, e_pa, i_m4):
+    # Simply supported beam with central point load
+    max_deflection = (load_n * (length_m ** 3)) / (48 * e_pa * i_m4) if (e_pa * i_m4) > 0 else None
+    max_moment = (load_n * length_m) / 4
+    return max_deflection, max_moment
+
 # ----------------- SIDEBAR & NAVIGATION ----------------- #
 module_options = [
     "🏠 Home Menu",
+    "🏫 Classroom Demos",
+    "🔄 Unit Converter Mode",
     "🧮 General Calculator",
     "🛠️ Mech Quick Tools",
     "1. Mechanics",
@@ -156,17 +176,30 @@ if st.session_state.module != "🏠 Home Menu":
         go_home()
         st.rerun()
 
-# Sidebar: Rolling Calculation History (Last 5)
+# --- SIDEBAR: 10-STEP HISTORY WITH DOWNLOAD & CLEAR ---
 st.sidebar.divider()
-st.sidebar.subheader("🕒 Last 5 Calculations")
+st.sidebar.subheader("🕒 History (Last 10)")
+
 if st.session_state.calc_history:
     for idx, item in enumerate(st.session_state.calc_history, 1):
         st.sidebar.caption(f"**{idx}.** {item}")
-    if st.sidebar.button("Clear History", use_container_width=True):
+
+    # Prepare plain-text string for export
+    history_text = "\n".join([f"{i+1}. {item}" for i, item in enumerate(st.session_state.calc_history)])
+    
+    st.sidebar.download_button(
+        label="📥 Download History (.txt)",
+        data=history_text,
+        file_name="p_manohar_calc_history.txt",
+        mime="text/plain",
+        use_container_width=True
+    )
+    
+    if st.sidebar.button("🗑️ Clear History", use_container_width=True):
         st.session_state.calc_history = []
         st.rerun()
 else:
-    st.sidebar.caption("No recent calculations yet.")
+    st.sidebar.caption("No calculations recorded yet.")
 
 
 # ----------------- MAIN VIEW ROUTING ----------------- #
@@ -176,13 +209,19 @@ if st.session_state.module != "🏠 Home Menu":
         st.rerun()
     st.divider()
 
-# --- HOME DASHBOARD ---
+# --- 1. HOME DASHBOARD ---
 if st.session_state.module == "🏠 Home Menu":
-    st.markdown("### 🚀 Engineering Modules & Tools")
-    st.write("Select a module below to launch formulas and automated solving:")
+    st.markdown("### 🚀 Engineering Portal Dashboard")
+    st.write("Choose any core discipline, classroom live simulator, or conversion module:")
 
-    colA, colB = st.columns(2)
-    with colA:
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("🏫 Classroom Demos", use_container_width=True):
+            set_module("🏫 Classroom Demos")
+            st.rerun()
+        if st.button("🔄 Unit Converter Mode", use_container_width=True):
+            set_module("🔄 Unit Converter Mode")
+            st.rerun()
         if st.button("🧮 General Calculator", use_container_width=True):
             set_module("🧮 General Calculator")
             st.rerun()
@@ -192,13 +231,13 @@ if st.session_state.module == "🏠 Home Menu":
         if st.button("2. Strength of Materials", use_container_width=True):
             set_module("2. Strength of Materials")
             st.rerun()
-        if st.button("3. Thermodynamics", use_container_width=True):
-            set_module("3. Thermodynamics")
-            st.rerun()
 
-    with colB:
+    with c2:
         if st.button("🛠️ Mech Quick Tools", use_container_width=True):
             set_module("🛠️ Mech Quick Tools")
+            st.rerun()
+        if st.button("3. Thermodynamics", use_container_width=True):
+            set_module("3. Thermodynamics")
             st.rerun()
         if st.button("4. Fluid Mechanics", use_container_width=True):
             set_module("4. Fluid Mechanics")
@@ -210,105 +249,231 @@ if st.session_state.module == "🏠 Home Menu":
             set_module("6. Machine Design")
             st.rerun()
 
-# --- GENERAL CALCULATOR MODE ---
+# --- 2. CLASSROOM DEMO SIMULATORS ---
+elif st.session_state.module == "🏫 Classroom Demos":
+    st.header("🏫 Classroom Interactive Demo Simulator")
+    demo_tab1, demo_tab2 = st.tabs(["1. Beam Deflection Simulator", "2. Simple Gear Train Simulator"])
+
+    with demo_tab1:
+        st.subheader("Simply Supported Beam (Point Load at Center)")
+        st.latex(r"\delta_{\max} = \frac{F \cdot L^3}{48 \cdot E \cdot I}, \quad M_{\max} = \frac{F \cdot L}{4}")
+        
+        col_d1, col_d2 = st.columns(2)
+        with col_d1:
+            f_load = st.slider("Applied Force (F) [N]", min_value=100.0, max_value=50000.0, value=5000.0, step=100.0)
+            l_beam = st.slider("Span Length (L) [m]", min_value=0.5, max_value=10.0, value=2.5, step=0.1)
+        with col_d2:
+            e_mat = st.selectbox("Beam Material (E)", ["Structural Steel (200 GPa)", "Aluminum (69 GPa)", "Cast Iron (110 GPa)"])
+            e_val = 200e9 if "Steel" in e_mat else (69e9 if "Aluminum" in e_mat else 110e9)
+            i_val = st.number_input("Area Moment of Inertia (I) [cm⁴]", min_value=0.1, value=450.0) * 1e-8
+
+        if st.button("Simulate Beam"):
+            defl_m, m_max = calc_beam_center_load(f_load, l_beam, e_val, i_val)
+            defl_mm = defl_m * 1000
+            add_history(f"Demo Beam: Load={f_load}N, Defl={defl_mm:.3f}mm")
+            
+            st.markdown(f"""
+            <div class="demo-card">
+                <h4>📊 Simulation Output</h4>
+                <p><b>Maximum Bending Moment:</b> {m_max:.2f} N·m</p>
+                <p><b>Central Deflection (δ_max):</b> <span style="color:#fbbf24; font-size:1.2rem; font-weight:bold;">{defl_mm:.3f} mm</span></p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.progress(min(defl_mm / 15.0, 1.0), text="Deflection Stress Visualizer")
+
+    with demo_tab2:
+        st.subheader("Simple Spur Gear Transmission")
+        st.latex(r"i = \frac{N_1}{N_2} = \frac{T_2}{T_1}, \quad \tau_2 = \tau_1 \times i")
+        
+        g1, g2 = st.columns(2)
+        with g1:
+            z1 = st.number_input("Driver Gear Teeth (T₁)", min_value=8, value=20)
+            n1 = st.number_input("Driver Speed (N₁) [RPM]", min_value=1.0, value=1500.0)
+            t1 = st.number_input("Driver Torque (τ₁) [N·m]", min_value=0.1, value=30.0)
+        with g2:
+            z2 = st.number_input("Driven Gear Teeth (T₂)", min_value=8, value=60)
+        
+        if st.button("Simulate Gear Ratio"):
+            ratio = z2 / z1
+            n2 = n1 / ratio
+            t2 = t1 * ratio
+            add_history(f"Gear Train: Ratio={ratio:.2f}:1, Driven={n2:.1f}RPM")
+            
+            st.markdown(f"""
+            <div class="demo-card">
+                <h4>⚙️ Gearbox Output</h4>
+                <p><b>Gear Ratio (i):</b> {ratio:.2f} : 1</p>
+                <p><b>Driven Speed (N₂):</b> <span style="color:#38bdf8; font-weight:bold;">{n2:.2f} RPM</span></p>
+                <p><b>Output Torque (τ₂):</b> <span style="color:#fbbf24; font-weight:bold;">{t2:.2f} N·m</span></p>
+            </div>
+            """, unsafe_allow_html=True)
+
+# --- 3. DEDICATED UNIT CONVERTER MODE ---
+elif st.session_state.module == "🔄 Unit Converter Mode":
+    st.header("🔄 Comprehensive Mechanical Unit Converter")
+    conv_category = st.selectbox(
+        "Choose Engineering Property", 
+        ["Pressure", "Power", "Force", "Length", "Dynamic Viscosity", "Thermal Conductivity"]
+    )
+
+    if conv_category == "Pressure":
+        st.latex(r"1\text{ bar} = 10^5\text{ Pa} = 0.1\text{ MPa} = 14.5038\text{ psi}")
+        val_p = st.number_input("Input Value (in Bar)", value=1.0)
+        st.info(f"""
+        - **{val_p * 1e5:.2f}** Pascals (Pa)
+        - **{val_p * 100:.2f}** Kilopascals (kPa)
+        - **{val_p * 0.1:.4f}** Megapascals (MPa)
+        - **{val_p * 14.5038:.3f}** Pounds per sq. inch (psi)
+        - **{val_p * 0.986923:.4f}** Atmospheres (atm)
+        """)
+        if st.button("Log Pressure Conversion"):
+            add_history(f"Converted {val_p} bar ➔ {val_p * 0.1:.2f} MPa")
+            st.success("Logged to history!")
+
+    elif conv_category == "Power":
+        st.latex(r"1\text{ kW} = 1000\text{ W} = 1.34102\text{ HP}")
+        val_pw = st.number_input("Input Value (in Kilowatts - kW)", value=5.0)
+        st.info(f"""
+        - **{val_pw * 1000:.2f}** Watts (W)
+        - **{val_pw * 1.34102:.3f}** Mechanical Horsepower (HP)
+        - **{val_pw * 859.845:.2f}** Kilocalories/hour (kcal/h)
+        - **{val_pw * 3412.14:.2f}** BTU/hour
+        """)
+        if st.button("Log Power Conversion"):
+            add_history(f"Converted {val_pw} kW ➔ {val_pw * 1.34102:.2f} HP")
+            st.success("Logged to history!")
+
+    elif conv_category == "Force":
+        st.latex(r"1\text{ kN} = 1000\text{ N} = 224.809\text{ lbf} = 101.97\text{ kgf}")
+        val_f = st.number_input("Input Value (in Kilonewtons - kN)", value=2.0)
+        st.info(f"""
+        - **{val_f * 1000:.2f}** Newtons (N)
+        - **{val_f * 224.809:.2f}** Pound-force (lbf)
+        - **{val_f * 101.972:.2f}** Kilogram-force (kgf)
+        """)
+        if st.button("Log Force Conversion"):
+            add_history(f"Converted {val_f} kN ➔ {val_f * 1000:.0f} N")
+            st.success("Logged to history!")
+
+    elif conv_category == "Length":
+        val_l = st.number_input("Input Value (in Millimeters - mm)", value=50.8)
+        st.info(f"""
+        - **{val_l / 1000:.4f}** Meters (m)
+        - **{val_l / 10:.2f}** Centimeters (cm)
+        - **{val_l / 25.4:.4f}** Inches (in)
+        - **{val_l / 304.8:.4f}** Feet (ft)
+        """)
+
+    elif conv_category == "Dynamic Viscosity":
+        st.latex(r"1\text{ Pa}\cdot\text{s} = 1\text{ kg/(m}\cdot\text{s)} = 10\text{ Poise} = 1000\text{ cP}")
+        val_mu = st.number_input("Input Dynamic Viscosity (Pa·s)", value=0.001, format="%.5f")
+        st.info(f"""
+        - **{val_mu * 1000:.2f}** Centipoise (cP)
+        - **{val_mu * 10:.3f}** Poise (P)
+        - **{val_mu * 0.671969:.5f}** lb/(ft·s)
+        """)
+
+    elif conv_category == "Thermal Conductivity":
+        st.latex(r"1\text{ W/(m}\cdot\text{K)} = 0.5778\text{ BTU/(hr}\cdot\text{ft}\cdot^\circ\text{F)}")
+        val_k = st.number_input("Input k [W/(m·K)]", value=45.0)
+        st.info(f"""
+        - **{val_k * 0.85984:.3f}** kcal/(hr·m·°C)
+        - **{val_k * 0.5778:.3f}** BTU/(hr·ft·°F)
+        """)
+
+# --- 4. GENERAL CALCULATOR MODE ---
 elif st.session_state.module == "🧮 General Calculator":
-    st.header("🧮 General & Scientific Calculator")
-    calc_type = st.radio("Operation Type", ["Basic Arithmetic (+, -, ×, ÷)", "Scientific Powers & Roots", "Trigonometry"], horizontal=True)
+    st.header("🧮 General & Scientific Mode")
+    c_mode = st.radio("Select Domain", ["Basic Math (+, -, ×, ÷)", "Scientific Exponents / Roots", "Trigonometric"], horizontal=True)
 
-    if calc_type == "Basic Arithmetic (+, -, ×, ÷)":
-        c1, c2, c3 = st.columns([2, 1, 2])
-        with c1:
-            num1 = st.number_input("Number 1", value=0.0)
-        with c2:
-            op = st.selectbox("Operator", ["+", "-", "×", "÷"])
-        with c3:
-            num2 = st.number_input("Number 2", value=0.0)
+    if c_mode == "Basic Math (+, -, ×, ÷)":
+        b1, b2, b3 = st.columns([2, 1, 2])
+        with b1: n1 = st.number_input("Operand 1", value=12.0)
+        with b2: oper = st.selectbox("Op", ["+", "-", "×", "÷"])
+        with b3: n2 = st.number_input("Operand 2", value=4.0)
 
-        if st.button("Calculate Result"):
-            if op == "+": res = num1 + num2
-            elif op == "-": res = num1 - num2
-            elif op == "×": res = num1 * num2
-            elif op == "÷": res = num1 / num2 if num2 != 0 else "Error: Division by 0"
+        if st.button("Solve Arithmetic"):
+            if oper == "+": res = n1 + n2
+            elif oper == "-": res = n1 - n2
+            elif oper == "×": res = n1 * n2
+            elif oper == "÷": res = n1 / n2 if n2 != 0 else "Error: Div/0"
 
             if isinstance(res, (int, float)):
-                record = f"{num1} {op} {num2} = {res:.4f}"
-                add_history(record)
+                add_history(f"{n1} {oper} {n2} = {res:.4f}")
                 st.success(f"**Result:** {res:.4f}")
             else:
                 st.error(res)
 
-    elif calc_type == "Scientific Powers & Roots":
-        sub_sc = st.selectbox("Function", ["Square Root (√x)", "Power (xʸ)", "Natural Log (ln x)", "Base-10 Log (log₁₀ x)"])
-        x_val = st.number_input("Value (x)", value=9.0)
-        y_val = 0.0
-        if sub_sc == "Power (xʸ)":
-            y_val = st.number_input("Power (y)", value=2.0)
+    elif c_mode == "Scientific Exponents / Roots":
+        sc_choice = st.selectbox("Function", ["Square Root (√x)", "Power (xʸ)", "Natural Log (ln x)", "Log Base 10"])
+        x_in = st.number_input("Input (x)", value=25.0)
+        y_in = 2.0
+        if sc_choice == "Power (xʸ)":
+            y_in = st.number_input("Exponent (y)", value=3.0)
 
-        if st.button("Calculate Result"):
-            if sub_sc == "Square Root (√x)":
-                res = math.sqrt(x_val) if x_val >= 0 else None
-                rec_str = f"√({x_val}) = {res:.4f}" if res is not None else "Math Error"
-            elif sub_sc == "Power (xʸ)":
-                res = x_val ** y_val
-                rec_str = f"{x_val}^{y_val} = {res:.4f}"
-            elif sub_sc == "Natural Log (ln x)":
-                res = math.log(x_val) if x_val > 0 else None
-                rec_str = f"ln({x_val}) = {res:.4f}" if res is not None else "Math Error"
-            elif sub_sc == "Base-10 Log (log₁₀ x)":
-                res = math.log10(x_val) if x_val > 0 else None
-                rec_str = f"log10({x_val}) = {res:.4f}" if res is not None else "Math Error"
+        if st.button("Solve Scientific"):
+            if sc_choice == "Square Root (√x)":
+                ans = math.sqrt(x_in) if x_in >= 0 else None
+                tag = f"√({x_in}) = {ans:.4f}"
+            elif sc_choice == "Power (xʸ)":
+                ans = x_in ** y_in
+                tag = f"{x_in}^{y_in} = {ans:.4f}"
+            elif sc_choice == "Natural Log (ln x)":
+                ans = math.log(x_in) if x_in > 0 else None
+                tag = f"ln({x_in}) = {ans:.4f}"
+            elif sc_choice == "Log Base 10":
+                ans = math.log10(x_in) if x_in > 0 else None
+                tag = f"log10({x_in}) = {ans:.4f}"
 
-            if res is not None:
-                add_history(rec_str)
-                st.success(f"**Result:** {res:.6f}")
+            if ans is not None:
+                add_history(tag)
+                st.success(f"**Result:** {ans:.6f}")
             else:
-                st.error("Input out of domain!")
+                st.error("Mathematical domain error!")
 
-    elif calc_type == "Trigonometry":
-        angle_deg = st.number_input("Angle (in Degrees)", value=45.0)
-        trig_fn = st.selectbox("Function", ["sin(θ)", "cos(θ)", "tan(θ)"])
-        if st.button("Calculate Result"):
-            rad = math.radians(angle_deg)
-            if trig_fn == "sin(θ)": res = math.sin(rad)
-            elif trig_fn == "cos(θ)": res = math.cos(rad)
-            elif trig_fn == "tan(θ)": res = math.tan(rad) if (angle_deg % 180 != 90) else "Undefined"
+    elif c_mode == "Trigonometric":
+        deg = st.number_input("Angle θ (Degrees)", value=30.0)
+        fn_trig = st.selectbox("Function", ["sin(θ)", "cos(θ)", "tan(θ)"])
+        if st.button("Solve Trigonometry"):
+            rad = math.radians(deg)
+            if fn_trig == "sin(θ)": out = math.sin(rad)
+            elif fn_trig == "cos(θ)": out = math.cos(rad)
+            elif fn_trig == "tan(θ)": out = math.tan(rad) if (deg % 180 != 90) else "Undefined"
 
-            if isinstance(res, float):
-                record = f"{trig_fn} @ {angle_deg}° = {res:.4f}"
-                add_history(record)
-                st.success(f"**Result:** {res:.4f}")
+            if isinstance(out, float):
+                add_history(f"{fn_trig} @ {deg}° = {out:.4f}")
+                st.success(f"**Result:** {out:.4f}")
             else:
-                st.error(res)
+                st.error(out)
 
-# --- QUICK TOOLS (CONVERTERS & MATERIAL PROPS) ---
+# --- 5. MECH QUICK TOOLS ---
 elif st.session_state.module == "🛠️ Mech Quick Tools":
-    st.header("🛠️ Engineering Student Quick Tools")
-    tool_tab1, tool_tab2 = st.tabs(["🔄 Unit Converters", "📋 Material Properties Table"])
+    st.header("🛠️ Mechanical Student Reference Tools")
+    t_tab1, t_tab2 = st.tabs(["📋 Standard Materials Database", "💧 Saturated Steam Snippet"])
 
-    with tool_tab1:
-        st.subheader("Fast Unit Conversions")
-        conv_type = st.selectbox("Conversion Type", ["Pressure", "Power", "Length"])
-        if conv_type == "Pressure":
-            val = st.number_input("Pressure value in Bar", value=1.0)
-            st.info(f"**{val} Bar equals:**\n- **{val * 100000:.2f}** Pascals (Pa)\n- **{val * 100:.2f}** kPa\n- **{val * 0.1:.4f}** MPa\n- **{val * 14.5038:.2f}** psi")
-        elif conv_type == "Power":
-            val = st.number_input("Power value in Kilowatts (kW)", value=1.0)
-            st.info(f"**{val} kW equals:**\n- **{val * 1000:.2f}** Watts (W)\n- **{val * 1.34102:.3f}** Horsepower (HP)\n- **{val * 859.845:.2f}** kcal/h")
-        elif conv_type == "Length":
-            val = st.number_input("Length in Millimeters (mm)", value=25.4)
-            st.info(f"**{val} mm equals:**\n- **{val / 1000:.4f}** Meters (m)\n- **{val / 10:.3f}** Centimeters (cm)\n- **{val / 25.4:.4f}** Inches (in)")
-
-    with tool_tab2:
-        st.subheader("Standard Mechanical Properties (Room Temp)")
+    with t_tab1:
+        st.subheader("Common Metals & Alloy Reference")
         st.markdown("""
-        | Material | Density (kg/m³) | Young's Modulus (GPa) | Yield Strength (MPa) |
-        | :--- | :--- | :--- | :--- |
-        | **Structural Steel (A36)** | 7850 | 200 | 250 |
-        | **Stainless Steel (304)** | 8000 | 193 | 215 |
-        | **Aluminum (6061-T6)** | 2700 | 69 | 276 |
-        | **Cast Iron (Gray)** | 7200 | 110 | 130 |
-        | **Titanium (Grade 5)** | 4430 | 114 | 880 |
-        | **Brass (C36000)** | 8500 | 97 | 310 |
+        | Material | Density (kg/m³) | Young's Modulus (GPa) | Yield Strength (MPa) | Thermal Cond. (W/mK) |
+        | :--- | :--- | :--- | :--- | :--- |
+        | **Structural Mild Steel** | 7850 | 200 | 250 | 45 |
+        | **Stainless Steel 304** | 8000 | 193 | 215 | 16.2 |
+        | **Aluminum 6061-T6** | 2700 | 69 | 276 | 167 |
+        | **Gray Cast Iron** | 7200 | 110 | 130 | 50 |
+        | **Titanium Gr. 5** | 4430 | 114 | 880 | 6.7 |
+        | **High Brass** | 8500 | 97 | 310 | 115 |
+        """)
+
+    with t_tab2:
+        st.subheader("Saturated Water / Steam Table (Gauge Guide)")
+        st.markdown("""
+        | Temp (°C) | Pressure (kPa) | Enthalpy Liquid $h_f$ (kJ/kg) | Enthalpy Evap $h_{fg}$ (kJ/kg) | Enthalpy Steam $h_g$ (kJ/kg) |
+        | :--- | :--- | :--- | :--- | :--- |
+        | **100** | 101.3 | 419.1 | 2257.0 | 2676.1 |
+        | **120** | 198.5 | 503.7 | 2202.6 | 2706.3 |
+        | **150** | 475.8 | 632.2 | 2114.3 | 2746.5 |
+        | **180** | 1002.7 | 763.2 | 2015.0 | 2778.2 |
+        | **200** | 1553.8 | 852.4 | 1940.7 | 2793.2 |
         """)
 
 # --- MODULE 1: MECHANICS ---
